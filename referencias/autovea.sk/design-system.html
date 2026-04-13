@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html class="w-mod-js wf-active" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Design System — Autovea Visual Language</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="assets/autovea_22ad7438f634.css" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <script src="assets/webfont_3a3adf980c7d.js" type="text/javascript"></script>
+  <link href="assets/css_9c5a1de12f26.css" media="all" rel="stylesheet"/>
+  <script type="text/javascript">WebFont.load({google:{families:["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic"]}});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="assets/66d09527f5397138e8172613_autov_6b0e41299562.png" rel="shortcut icon" type="image/x-icon"/>
+
+  <style>
+  /*
+   * DESIGN SYSTEM — Documentation Layout Styles
+   * These styles exist ONLY for DS page structure and presentation.
+   * All component examples use original CSS classes exclusively.
+   */
+
+  .ds-section {
+    background-color: var(--background-color--background-primary, #000);
+  }
+
+  /* Section eyebrow label */
+  .ds-eyebrow {
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--base-color-brand--blue, #146ef5);
+    display: block;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Typography specimen rows */
+  .ds-type-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--base-color-neutral--neutral-darker, #222);
+    padding: 2rem 0;
+    gap: 2rem;
+  }
+  .ds-type-row:first-of-type { border-top: 1px solid var(--base-color-neutral--neutral-darker, #222); }
+  .ds-type-name {
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--base-color-neutral--neutral, #666);
+    min-width: 130px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .ds-type-preview { flex: 1; min-width: 0; }
+  .ds-type-meta {
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    font-size: .7rem;
+    color: var(--base-color-neutral--neutral-dark, #444);
+    min-width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* Color swatches */
+  .ds-swatches-group { margin-bottom: 3.5rem; }
+  .ds-swatches-group-title {
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--base-color-neutral--neutral, #666);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 1.25rem;
+  }
+  .ds-swatch-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .ds-swatch {
+    border-radius: .5rem;
+    width: 130px;
+    overflow: hidden;
+    border: 1px solid var(--base-color-neutral--neutral-darker, #222);
+  }
+  .ds-swatch-color { height: 72px; }
+  .ds-swatch-info { padding: .625rem .75rem; background: var(--base-color-neutral--neutral-darkest, #111); }
+  .ds-swatch-name {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--base-color-neutral--neutral-lighter, #ccc);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    line-height: 1.4;
+  }
+  .ds-swatch-hex {
+    font-size: .65rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: monospace;
+    margin-top: .2rem;
+    line-height: 1.5;
+  }
+
+  /* Component state rows */
+  .ds-states-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--base-color-neutral--neutral-darker, #222);
+  }
+  .ds-state-item { display: flex; flex-direction: column; gap: .625rem; }
+  .ds-state-label {
+    font-size: .65rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  /* Sub-sections */
+  .ds-subsection { margin-bottom: 5rem; }
+  .ds-subsection-title {
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--base-color-neutral--neutral-lightest, #eee);
+    margin-bottom: 2rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--base-color-neutral--neutral-darker, #222);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  /* Motion gallery */
+  .ds-motion-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: flex-start;
+    padding: 2.5rem 0;
+  }
+  .ds-motion-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .ds-motion-label {
+    font-size: .65rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    text-align: center;
+    max-width: 200px;
+    line-height: 1.6;
+  }
+
+  /* Icons grid */
+  .ds-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1.5rem;
+  }
+  .ds-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    padding: 1.5rem 1rem;
+    background: var(--base-color-neutral--neutral-darkest, #111);
+    border: 1px solid var(--base-color-neutral--neutral-darker, #222);
+    border-radius: .5rem;
+    text-align: center;
+  }
+  .ds-icon-name {
+    font-size: .65rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    line-height: 1.5;
+  }
+
+  /* Layout demos */
+  .ds-layout-demo {
+    background: var(--base-color-neutral--neutral-darkest, #111);
+    border: 1px dashed var(--base-color-neutral--neutral-dark, #444);
+    border-radius: .5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .ds-layout-demo-label {
+    font-size: .65rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+  .ds-col-demo {
+    background: var(--base-color-neutral--neutral-darker, #222);
+    border: 1px solid var(--base-color-neutral--neutral-dark, #444);
+    border-radius: .25rem;
+    padding: 1.5rem;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ds-col-label {
+    font-size: .7rem;
+    color: var(--base-color-neutral--neutral, #666);
+    font-family: Inter Variablefont Slnt Wght, sans-serif;
+    text-align: center;
+  }
+  .ds-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .ds-grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOP NAV — Design System Navigation
+     Exact nav_fixed + nav_component CSS. Links repurposed
+     to anchor into each DS section.
+============================================================ -->
+<div class="nav_fixed">
+  <div class="nav_component w-nav" role="banner">
+    <div class="padding-global">
+      <div class="nav_container">
+        <a aria-label="home" class="nav_brand w-nav-brand" href="#hero">
+          <img alt="Autovea" class="nav_logo" loading="lazy" src="assets/669576c21695d8ae256bb2de_White_6600b04dcb71.svg"/>
+        </a>
+        <nav class="nav_menu w-nav-menu" role="navigation">
+          <div class="navbar_links_wrapper">
+            <a class="button-line-fill w-inline-block" href="#typography">
+              <div>
+                <div class="text-block-5">Typography</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <a class="button-line-fill w-inline-block" href="#colors">
+              <div>
+                <div class="text-block-5">Colors</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <a class="button-line-fill w-inline-block" href="#components">
+              <div>
+                <div class="text-block-5">Components</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <a class="button-line-fill w-inline-block" href="#layout">
+              <div>
+                <div class="text-block-5">Layout</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <a class="button-line-fill w-inline-block" href="#motion">
+              <div>
+                <div class="text-block-5">Motion</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <a class="button-primary w-button" href="#icons">Icons</a>
+          </div>
+        </nav>
+        <div aria-expanded="false" aria-haspopup="menu" aria-label="menu" class="nav_button w-nav-button" role="button" tabindex="0">
+          <div class="w-icon-nav-menu"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 0 — HERO
+     Direct clone of original hero. Only text changed to
+     present the Design System. Structure, classes, images,
+     animations, and background are identical.
+============================================================ -->
+<div id="hero" class="section_hero" style="position:relative; overflow:hidden;">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="hero_content">
+        <div class="hero_badge-wrapper">
+          <p class="text-align-center text-size-small text-color-white">
+            <strong class="hero_number-gradient">v1.0</strong> Design System — Autovea Visual Language
+          </p>
+        </div>
+        <div class="margin-vertical margin-small">
+          <h1 class="heading-style-h1 text-align-left">Design System</h1>
+        </div>
+        <div class="margin-bottom margin-small">
+          <p class="text-size-medium text-align-left text-color-white">
+            A living pattern library of all visual components, typography, colors, and interactions that define the Autovea brand identity.
+          </p>
+        </div>
+      </div>
+      <div class="margin-top margin-small">
+        <div class="hero_features">
+          <a class="button-primary is-3 w-button" href="#components">View Components</a>
+          <div class="hero_feature">
+            <img alt="" class="hero_feature-icon" loading="lazy" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+            <div class="text-color-white">Typography</div>
+          </div>
+          <div class="hero_feature">
+            <img alt="" class="hero_feature-icon" loading="lazy" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+            <div class="text-color-white">Colors</div>
+          </div>
+          <div class="hero_feature">
+            <img alt="" class="hero_feature-icon" loading="lazy" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+            <div class="text-color-white">Motion</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img
+    alt="black honda suv on brown field during daytime"
+    class="unsplash-image brix---bg-image-full-width"
+    height="5184"
+    sizes="100vw"
+    src="assets/photo-1604417619523-b076a81c98_1d1586933701.jpg"
+    srcset="
+      assets/photo-1604417619523-b076a81c98_e6d123399efd.jpg 400w,
+      assets/photo-1604417619523-b076a81c98_de2e7399df28.jpg 800w,
+      assets/photo-1604417619523-b076a81c98_dbfcca1f5ecc.jpg 1200w,
+      assets/photo-1604417619523-b076a81c98_480617092ccf.avif 2000w,
+      assets/photo-1604417619523-b076a81c98_2cc62b793b9a.jpg 4000w"
+    width="3456"/>
+</div>
+
+<!-- ============================================================
+     SECTION 1 — TYPOGRAPHY
+============================================================ -->
+<section id="typography" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">01 — Typography</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Type System</h2>
+        <div class="text-color-neutral-lightest text-align-center">Inter Variable · the typeface used across all Autovea interfaces</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Heading 1</span>
+        <div class="ds-type-preview">
+          <h1 class="heading-style-h1 text-align-left">Heading Style H1</h1>
+        </div>
+        <span class="ds-type-meta">4rem · 700 · lh 1.1<br>gradient 302°</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Heading 2</span>
+        <div class="ds-type-preview">
+          <h2 class="heading-style-h2 tabs text-align-center">Heading Style H2</h2>
+        </div>
+        <span class="ds-type-meta">3rem · 600 · lh 1.2<br>gradient 180°</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Heading 2 (plain)</span>
+        <div class="ds-type-preview">
+          <h2 class="heading-style-h2">Heading Style H2 Plain</h2>
+        </div>
+        <span class="ds-type-meta">3rem · 700 · lh 1.2<br>#cccccc</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Heading 3</span>
+        <div class="ds-type-preview">
+          <h2 class="heading-style-h3">Heading Style H3</h2>
+        </div>
+        <span class="ds-type-meta">2rem · 700 · lh 1.2<br>#eeeeee</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Heading 4</span>
+        <div class="ds-type-preview">
+          <h4 class="heading-style-h4">Heading Style H4</h4>
+        </div>
+        <span class="ds-type-meta">1.5rem · 700 · lh 1.4<br>#eeeeee</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Card Heading</span>
+        <div class="ds-type-preview">
+          <h3 class="card-heading">Card Heading — Feature Title</h3>
+        </div>
+        <span class="ds-type-meta">1.5rem · 500<br>#eeeeee</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Body Large</span>
+        <div class="ds-type-preview">
+          <p class="text-size-medium text-color-white">Large paragraph — lead copy, hero descriptions, and prominent body text.</p>
+        </div>
+        <span class="ds-type-meta">1.25rem · 400<br>#ffffff</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Body Regular</span>
+        <div class="ds-type-preview">
+          <p class="text-color-neutral-light">Regular body paragraph for feature descriptions, card text, and supporting copy used across sections.</p>
+        </div>
+        <span class="ds-type-meta">1rem · 400<br>#aaaaaa</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Body Small</span>
+        <div class="ds-type-preview">
+          <p class="text-size-small text-color-neutral-lightest">Small text for meta labels, badges, car spec values, and secondary captions.</p>
+        </div>
+        <span class="ds-type-meta">0.875rem · 400<br>#eeeeee</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Semibold</span>
+        <div class="ds-type-preview">
+          <div class="text-color-white text-weight-semibold" style="font-size:1.5rem; font-family:Inter Variablefont Slnt Wght,sans-serif;">Semibold — car names and emphasized labels</div>
+        </div>
+        <span class="ds-type-meta">600 weight<br>#ffffff</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Nav Link</span>
+        <div class="ds-type-preview">
+          <div class="button-line-fill w-inline-block" style="display:inline-flex; pointer-events:none;">
+            <div>
+              <div class="text-block-5">Navigation link</div>
+              <div class="button-line smaller" style="width:100%;"><div class="button-line-absolute smaller" style="width:60%"></div></div>
+            </div>
+          </div>
+        </div>
+        <span class="ds-type-meta">0.9rem · 300<br>#f5f5f5</span>
+      </div>
+
+      <div class="ds-type-row">
+        <span class="ds-type-name">Gradient Number</span>
+        <div class="ds-type-preview">
+          <strong class="hero_number-gradient" style="font-size:3rem; font-weight:700; font-family:Inter Variablefont Slnt Wght,sans-serif;">50+</strong>
+        </div>
+        <span class="ds-type-meta">bold · clip gradient<br>blue-light → white</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — COLORS & SURFACES
+============================================================ -->
+<section id="colors" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">02 — Colors &amp; Surfaces</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Color System</h2>
+        <div class="text-color-neutral-lightest text-align-center">All tokens are CSS custom properties defined in :root via autovea_22ad7438f634.css</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <!-- Neutrals -->
+      <div class="ds-swatches-group">
+        <div class="ds-swatches-group-title">Neutrals — Base Scale</div>
+        <div class="ds-swatch-row">
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#000"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Black</div>
+              <div class="ds-swatch-hex">#000000<br>--neutral--black<br>Page bg</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#111"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Darkest</div>
+              <div class="ds-swatch-hex">#111111<br>--neutral-darkest<br>Card bg</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#222"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Darker</div>
+              <div class="ds-swatch-hex">#222222<br>--neutral-darker<br>Borders</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#444"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Dark</div>
+              <div class="ds-swatch-hex">#444444<br>--neutral-dark<br>Nav border</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#666"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Neutral</div>
+              <div class="ds-swatch-hex">#666666<br>--neutral<br>Muted text</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#aaa"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Light</div>
+              <div class="ds-swatch-hex">#aaaaaa<br>--neutral-light<br>Body text</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#ccc"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Lighter</div>
+              <div class="ds-swatch-hex">#cccccc<br>--neutral-lighter<br>H2 color</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#eee"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Lightest</div>
+              <div class="ds-swatch-hex">#eeeeee<br>--neutral-lightest<br>H3, H4</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#fff; border-bottom:1px solid #333;"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">White</div>
+              <div class="ds-swatch-hex">#ffffff<br>--neutral--white<br>Primary text</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Colors -->
+      <div class="ds-swatches-group">
+        <div class="ds-swatches-group-title">Brand — Blue (Primary Action)</div>
+        <div class="ds-swatch-row">
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#080331"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Blue Dark</div>
+              <div class="ds-swatch-hex">#080331<br>--brand--blue-dark</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#146ef5"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Blue</div>
+              <div class="ds-swatch-hex">#146ef5<br>--brand--blue<br>Buttons, links</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#0055d4"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Blue Hover</div>
+              <div class="ds-swatch-hex">#0055d4<br>button:hover state</div>
+            </div>
+          </div>
+          <div class="ds-swatch">
+            <div class="ds-swatch-color" style="background:#d9e5ff"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Blue Light</div>
+              <div class="ds-swatch-hex">#d9e5ff<br>--brand--blue-light<br>Number gradient</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradients -->
+      <div class="ds-swatches-group">
+        <div class="ds-swatches-group-title">Gradients</div>
+        <div class="ds-swatch-row">
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:linear-gradient(302deg,#eee,#fff)"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">H1 Text Gradient</div>
+              <div class="ds-swatch-hex">302deg #eee → #fff<br>.heading-style-h1<br>.text-align-left</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:linear-gradient(180deg,#aaa,#eee)"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">H2 Tabs Gradient</div>
+              <div class="ds-swatch-hex">180deg #aaa → #eee<br>.heading-style-h2<br>.tabs.text-align-center</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:linear-gradient(86deg,#d9e5ff,#fff)"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Number Gradient</div>
+              <div class="ds-swatch-hex">86deg blue-light → white<br>.hero_number-gradient</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:linear-gradient(45deg,#3a3a3a,#000)"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Card Surface</div>
+              <div class="ds-swatch-hex">45deg #3a3a3a → #000<br>.cars_card</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:linear-gradient(180deg,rgba(0,0,0,0) 28%,#000 95%),linear-gradient(90deg,rgba(0,0,0,.6) 35%,transparent)"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Hero Overlay</div>
+              <div class="ds-swatch-hex">Dual gradient overlay<br>.section_hero<br>background-image</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semantic Surfaces -->
+      <div class="ds-swatches-group">
+        <div class="ds-swatches-group-title">Semantic Surfaces &amp; Backgrounds</div>
+        <div class="ds-swatch-row">
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:#000"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Page Background</div>
+              <div class="ds-swatch-hex">background-primary<br>= neutral--black</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:#111; border:.6px solid #222;"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Feature Card</div>
+              <div class="ds-swatch-hex">bg #111 · border #222<br>.features_item</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:#146ef5"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">CTA Card</div>
+              <div class="ds-swatch-hex">bg brand--blue<br>.brix---cta-v16-card</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="background:rgba(255,255,255,.1); border:.0625rem solid #aaa;"></div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Badge / Glass</div>
+              <div class="ds-swatch-hex">#ffffff1a · border #aaa<br>.hero_badge-wrapper</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Borders -->
+      <div class="ds-swatches-group">
+        <div class="ds-swatches-group-title">Borders &amp; Dividers</div>
+        <div class="ds-swatch-row">
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="display:flex; align-items:center; justify-content:center; height:72px; background:#111;">
+              <div style="width:80%; height:1px; background:#222;"></div>
+            </div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Border Darker</div>
+              <div class="ds-swatch-hex">#222 · 1px<br>card borders, nav</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="display:flex; align-items:center; justify-content:center; height:72px; background:#111;">
+              <div style="width:80%; height:1px; background:#444;"></div>
+            </div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Border Dark</div>
+              <div class="ds-swatch-hex">#444 · 1px<br>layout353 items</div>
+            </div>
+          </div>
+          <div class="ds-swatch" style="width:175px">
+            <div class="ds-swatch-color" style="display:flex; align-items:center; justify-content:center; height:72px; background:#111;">
+              <div style="width:80%; height:1px; background:rgba(255,255,255,.4);"></div>
+            </div>
+            <div class="ds-swatch-info">
+              <div class="ds-swatch-name">Car Card Border</div>
+              <div class="ds-swatch-hex">#fff6 · 0.0375rem<br>.cars_card</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — UI COMPONENTS
+============================================================ -->
+<section id="components" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">03 — UI Components</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Components</h2>
+        <div class="text-color-neutral-lightest text-align-center">All interactive elements with default, hover, active, and disabled states</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <!-- ── BUTTONS ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Buttons</div>
+
+        <div class="ds-states-row">
+          <div class="ds-state-item">
+            <div class="ds-state-label">Default</div>
+            <a class="button-primary w-button" href="#">Ponuka vozidiel</a>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Alternate variant</div>
+            <a class="button-primary alternate w-button" href="#">Alternate</a>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Disabled</div>
+            <a class="button-primary w-button" style="opacity:.4; pointer-events:none;" href="#">Disabled</a>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Submit (.right-cta-btn)</div>
+            <input class="right-cta-btn w-button" type="submit" value="Pripojiť sa" style="position:static; padding:.75rem 1.5rem; bottom:auto; top:auto; right:auto;"/>
+          </div>
+        </div>
+
+        <div class="ds-states-row">
+          <div class="ds-state-item">
+            <div class="ds-state-label">Nav link — hover me</div>
+            <a class="button-line-fill w-inline-block" href="#">
+              <div>
+                <div class="text-block-5">FAQ</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Nav link — active state</div>
+            <a class="button-line-fill w-inline-block" href="#">
+              <div>
+                <div class="text-block-5">Kontakt</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:100%"></div></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FEATURE CARDS ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Feature Cards — .features_item (hover to see scale animation)</div>
+
+        <div class="w-layout-grid features_component">
+          <div class="features_item">
+            <div class="margin-bottom margin-small">
+              <div class="title-wrapper">
+                <img alt="" class="icon" loading="lazy" src="assets/661579717bdf0181a31b42ae_car-0_cabda03c6074.svg"/>
+                <h3 class="card-heading">Rýchle dodanie</h3>
+              </div>
+            </div>
+            <p class="text-color-neutral-light">Nové autá máme k dispozícii do 3 týždňov, po administratívnom procese prihlásenia a príprave vozidla.</p>
+          </div>
+          <div class="features_item">
+            <div class="margin-bottom margin-small">
+              <div class="title-wrapper">
+                <img alt="" class="icon" loading="lazy" src="assets/6615798679bc1ae351858d6c_check_be5c68f6b486.svg"/>
+                <h3 class="card-heading">Povinné ručenie</h3>
+              </div>
+            </div>
+            <p class="text-color-neutral-light">S nami neriešite, aké poistenie auta je pre vás najvhodnejšie. Vždy máte tie najlepšie možné podmienky.</p>
+          </div>
+          <div class="features_item">
+            <div class="margin-bottom margin-small">
+              <div class="title-wrapper">
+                <img alt="" class="icon" loading="lazy" src="assets/6615799a950f470f72aa581c_phone_1a1fd2ac75d7.svg"/>
+                <h3 class="card-heading">Vrátenie kedykoľvek</h3>
+              </div>
+            </div>
+            <p class="text-color-neutral-light">Auto môžete kedykoľvek vymeniť alebo vrátiť. S flexibilným operatívnym lízingom bez záväzkov.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CAR CARD ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Car Card — .cars_card</div>
+
+        <div style="max-width:400px">
+          <a class="cars_collection-link-block w-inline-block" href="#">
+            <div class="cars_card">
+              <div class="cars_card-img-wrapper">
+                <div class="text-color-neutral-lightest class_badge text-weight-semibold">Zľava 20%</div>
+                <img alt="Volkswagen Arteon" class="cars_image" loading="lazy"
+                  src="assets/6640c8495022aed3087634e6_DSC04_49f2d6a5c00a.avif"
+                  srcset="assets/6640c8495022aed3087634e6_DSC04_294eaf3791ca.webp 500w, assets/6640c8495022aed3087634e6_DSC04_ad057427d8f9.webp 800w, assets/6640c8495022aed3087634e6_DSC04_49f2d6a5c00a.avif 1280w"/>
+              </div>
+              <div class="margin-vertical margin-small">
+                <div class="cars_card-name-wrapper">
+                  <div class="text-color-white text-weight-semibold nazov">Volkswagen Arteon</div>
+                  <div class="text-color-neutral-lightest text-size-small brand">2.0 TDI</div>
+                </div>
+              </div>
+              <div class="margin-bottom margin-small">
+                <div class="padding-horizontal padding-medium">
+                  <div class="cars_card-grid">
+                    <div class="cars_card-parameter">
+                      <svg app="ikonik" class="cars_card-icon" height="18" viewBox="0 0 1024 1024" width="18" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="currentColor" d="M848 359.3H627.7L825.8 109c4.1-5.3.4-13-6.3-13H436c-2.8 0-5.5 1.5-6.9 4L170 547.5c-3.1 5.3.7 12 6.9 12h174.4l-89.4 357.6c-1.9 7.8 7.5 13.3 13.3 7.7L853.5 373c5.2-4.9 1.7-13.7-5.5-13.7z"></path>
+                      </svg>
+                      <div class="cars_card-paramter-content">
+                        <div class="text-color-neutral_lightest text-size-small">Výkon motora</div>
+                        <div class="text-color-white text-weight-semibold">110 kW</div>
+                      </div>
+                    </div>
+                    <div class="cars_card-parameter">
+                      <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 3a2 2 0 0 0-2 2v14a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2v-5h1v2.5a2.5 2.5 0 0 0 5 0v-6.086A2 2 0 0 0 20.414 9l-2.707-2.707a1 1 0 1 0-1.414 1.414l1.1 1.101A1.999 1.999 0 0 0 19 12l.001 4.5a.5.5 0 0 1-1 0V14a2 2 0 0 0-2-2h-1V5a2 2 0 0 0-2-2H5Zm8 7V5H5v5h8Z" fill="currentColor"></path>
+                      </svg>
+                      <div>
+                        <div class="text-color-neutral_lightest text-size-small">Palivo</div>
+                        <div class="text-color-white text-weight-semibold">Diesel</div>
+                      </div>
+                    </div>
+                    <div class="cars_card-parameter">
+                      <svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 3a3 3 0 0 1 1 5.829v1.171a3 3 0 0 1-3 3h-4v2.171a3.001 3.001 0 1 1-4 2.829l.005-.176a3 3 0 0 1 1.995-2.654v-2.17h-5v2.171a3.001 3.001 0 1 1-4 2.829l.005-.176a3 3 0 0 1 1.995-2.654v-6.341a3 3 0 0 1-2-2.829l.005-.176a3 3 0 1 1 3.996 3.005l-.001 2.171h5v-2.17a3 3 0 0 1-2-2.83l.005-.176a3 3 0 1 1 3.996 3.005l-.001 2.171h4a1 1 0 0 0 1-1v-1.17a3 3 0 0 1-2-2.83l.005-.176a3 3 0 0 1 2.995-2.824"></path>
+                      </svg>
+                      <div>
+                        <div class="text-color-neutral_lightest text-size-small">Prevodovka</div>
+                        <div class="text-color-white text-weight-semibold">Automat</div>
+                      </div>
+                    </div>
+                    <div class="cars_card-parameter">
+                      <svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm0 9a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-5z"></path>
+                      </svg>
+                      <div>
+                        <div class="text-color-neutral_lightest text-size-small">Karoséria</div>
+                        <div class="text-color-white text-weight-semibold">Fastback</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── CTA CARD ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">CTA Card — .brix---cta-v16-card with inline form</div>
+
+        <div class="brix---cta-v16-card">
+          <img alt="" class="contact-cta_floating-item" src="assets/66250806a0b7a6a1c1d14004_patte_d17fa57c60fe.svg" width="239"/>
+          <img alt="" class="contact-cta_floating-item-2" src="assets/66250807a0b7a6a1c1d14022_patte_f60685b08763.svg" width="227"/>
+          <div class="w-layout-grid cta-grid">
+            <div class="left-cta-wrapper">
+              <h2 class="heading-style-h3">Staňte sa členom VIP</h2>
+              <div class="cta_list">
+                <div class="cta_list-wrapper">
+                  <img alt="" class="cta_icon" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+                  <div class="text-color-white">Dostávajte jedinečné akciové ponuky</div>
+                </div>
+                <div class="cta_list-wrapper">
+                  <img alt="" class="cta_icon" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+                  <div class="text-color-white">Okamžité informácie o nových vozidlách</div>
+                </div>
+                <div class="cta_list-wrapper">
+                  <img alt="" class="cta_icon" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg"/>
+                  <div class="text-color-white">Tipy a triky o starostlivosť vozidla</div>
+                </div>
+              </div>
+            </div>
+            <div class="right-cta-wrapper">
+              <div class="right-cta_form-block w-form">
+                <div class="right-cta-position-relative">
+                  <input class="right-cta-input w-input" placeholder="Email" type="email"/>
+                  <input class="right-cta-btn w-button" type="submit" value="Pripojiť sa"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BADGE ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Badges</div>
+
+        <div style="display:flex; gap:2.5rem; flex-wrap:wrap; align-items:center; padding:2.5rem 0; border-bottom:1px solid #222;">
+          <div class="ds-state-item">
+            <div class="ds-state-label">Hero Badge (.hero_badge-wrapper)</div>
+            <div class="hero_badge-wrapper" style="position:static; display:inline-block; width:auto;">
+              <p class="text-align-center text-size-small text-color-white">
+                <strong class="hero_number-gradient">50+</strong> zákazníkov využíva služby Autovea
+              </p>
+            </div>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Discount Badge (.class_badge)</div>
+            <div style="position:relative; display:inline-flex; padding:2rem 3rem; background:linear-gradient(45deg,#3a3a3a,#000); border-radius:.5rem; border:.0375rem solid rgba(255,255,255,.4);">
+              <div class="text-color-neutral-lightest class_badge text-weight-semibold" style="position:relative; inset:auto; display:inline-block; margin:0;">Zľava 20%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SWIPER NAVIGATION ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Carousel Navigation — Swiper arrows + bullets</div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:3rem; align-items:flex-start; padding:2rem 0;">
+          <div class="ds-state-item">
+            <div class="ds-state-label">Arrows</div>
+            <div class="w-layout-grid swiper_arrows">
+              <button class="swiper_arrow is-prev is-disabled" aria-label="Previous slide">
+                <div class="icon-embed w-embed">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </div>
+              </button>
+              <button class="swiper_arrow is-next" aria-label="Next slide">
+                <div class="icon-embed w-embed">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+              </button>
+            </div>
+          </div>
+          <div class="ds-state-item">
+            <div class="ds-state-label">Pagination bullets</div>
+            <div class="swiper_bullets" style="justify-content:flex-start;">
+              <button class="swiper_bullet is-active"></button>
+              <button class="swiper_bullet"></button>
+              <button class="swiper_bullet"></button>
+              <button class="swiper_bullet"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FOOTER COMPONENT ── -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Footer — .footer_wrapper</div>
+        <footer class="footer_wrapper" style="border-radius:.5rem; overflow:hidden; border:1px solid #222;">
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="footer_top-content" style="padding-top:3rem; padding-bottom:2rem;">
+                <div class="w-layout-grid top-content_grid">
+                  <div class="top-content_grid-left">
+                    <div class="brix---footer-col-title">Autovea.sk</div>
+                    <ul class="brix---footer-list-wrapper" role="list">
+                      <li class="brix---footer-list-item"><a class="terms_link" href="#">Ponuka vozidiel</a></li>
+                      <li class="brix---footer-list-item"><a class="terms_link" href="#">Kontaktné údaje</a></li>
+                      <li class="brix---footer-list-item"><a class="terms_link" href="#">Ako Autovea funguje</a></li>
+                      <li class="brix---footer-list-item"><a class="terms_link" href="#">Často kladené otázky</a></li>
+                    </ul>
+                  </div>
+                  <div class="top-content_grid-middle">
+                    <div class="brix---footer-col-title">Zákaznícka linka</div>
+                    <ul class="brix---footer-list-wrapper" role="list">
+                      <li class="brix---footer-list-item">
+                        <a class="brix---link-wrapper-color-primary w-inline-block" href="mailto:info@autovea.sk">
+                          <div class="icon-1x1-small"><img alt="" class="brix---link-icon-left" loading="lazy" src="assets/6640dfe70417a50b95cf18b2_MAIL_e3a1390a6e86.svg"/></div>
+                          <div class="brix---link-text">info@autovea.sk</div>
+                        </a>
+                      </li>
+                      <li class="brix---footer-list-item">
+                        <a class="brix---link-wrapper-color-primary w-inline-block" href="tel:+421908999777">
+                          <div class="icon-1x1-small"><img alt="" class="brix---link-icon-left" loading="lazy" src="assets/6640e032ed6f271218582ce8_phone_b56f587e8d42.svg"/></div>
+                          <div class="brix---link-text">+421 949 067 429</div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="w-layout-grid top-content_grid-socials">
+                    <div class="brix---footer-col-title">Sledujte nás</div>
+                    <a class="w-inline-block" href="#">
+                      <div class="social_btn_wrapper">
+                        <div><img alt="Facebook" src="assets/66407882a012cd3b89d4aa16_faceb_812261105ad9.svg" width="30"/></div>
+                        <div class="text-color-neutral_lightest">Facebook</div>
+                      </div>
+                    </a>
+                    <a class="w-inline-block" href="#">
+                      <div class="social_btn_wrapper">
+                        <div><img alt="Instagram" src="assets/66407882a012cd3b89d4aa7e_insta_0f36c1ae359f.svg" width="30"/></div>
+                        <div class="text-color-neutral_lightest">Instagram</div>
+                      </div>
+                    </a>
+                    <a class="w-inline-block" href="#">
+                      <div class="social_btn_wrapper">
+                        <div><img alt="YouTube" src="assets/66407881a012cd3b89d4a9c5_youtu_45caa3d552eb.svg" width="30"/></div>
+                        <div class="text-color-neutral_lightest">YouTube</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="footer_bottom-content">
+                <div class="w-layout-grid footer_bottom-grid">
+                  <div class="footer_bottom-author">© 2024 Autovea s.r.o. Všetky práva vyhradené.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — LAYOUT & SPACING
+============================================================ -->
+<section id="layout" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">04 — Layout &amp; Spacing</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Layout System</h2>
+        <div class="text-color-neutral-lightest text-align-center">Containers, grids, and spacing scale used across all sections</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <!-- Containers -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Containers</div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.container-large — max-width: 80rem (1280px) · margin: auto</div>
+          <div class="ds-col-demo"><span class="ds-col-label">max-width 80rem · horizontally centered</span></div>
+        </div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.padding-global — padding-left: 2.5rem · padding-right: 2.5rem (40px each side)</div>
+          <div style="background:#222; border-radius:.25rem; height:60px; position:relative; overflow:hidden;">
+            <div style="background:rgba(20,110,245,.15); border-right:2px solid #146ef5; width:2.5rem; height:100%; position:absolute; left:0; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:.55rem; color:#146ef5; font-family:monospace; writing-mode:vertical-rl; transform:rotate(180deg);">2.5rem</span>
+            </div>
+            <div style="background:rgba(20,110,245,.15); border-left:2px solid #146ef5; width:2.5rem; height:100%; position:absolute; right:0; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:.55rem; color:#146ef5; font-family:monospace; writing-mode:vertical-rl; transform:rotate(180deg);">2.5rem</span>
+            </div>
+            <div style="position:absolute; left:2.5rem; right:2.5rem; top:0; bottom:0; background:#333; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:.7rem; color:#666; font-family:monospace;">content area</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.padding-section-large — padding-top: 8rem · padding-bottom: 8rem (128px)</div>
+          <div style="background:#222; border-radius:.25rem; display:flex; flex-direction:column;">
+            <div style="background:rgba(20,110,245,.15); border-bottom:2px solid #146ef5; height:3rem; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:.65rem; color:#146ef5; font-family:monospace;">8rem top padding</span>
+            </div>
+            <div style="background:#333; padding:1.25rem; text-align:center;">
+              <span style="font-size:.7rem; color:#666; font-family:monospace;">section content</span>
+            </div>
+            <div style="background:rgba(20,110,245,.15); border-top:2px solid #146ef5; height:3rem; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:.65rem; color:#146ef5; font-family:monospace;">8rem bottom padding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing Scale -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Spacing Scale — .margin-* / .spacer-* tokens</div>
+        <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-end; padding:2rem 0;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:.5rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">.xsmall<br>.5rem / 8px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:1rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">.small<br>1rem / 16px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:2rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">.medium<br>2rem / 32px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:6rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">.spacer-huge<br>6rem / 96px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:8rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">section-large<br>8rem / 128px</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:.75rem;">
+            <div style="width:10px; background:#146ef5; border-radius:2px; height:10rem;"></div>
+            <span style="font-size:.65rem; color:#666; font-family:monospace; text-align:center;">.xxhuge<br>12rem / 192px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Patterns -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Grid Patterns</div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.features_component — 3 columns · gap: 3rem (col) / 4rem (row)</div>
+          <div class="ds-grid-3col">
+            <div class="ds-col-demo"><span class="ds-col-label">Feature 1</span></div>
+            <div class="ds-col-demo"><span class="ds-col-label">Feature 2</span></div>
+            <div class="ds-col-demo"><span class="ds-col-label">Feature 3</span></div>
+          </div>
+        </div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.layout353_component — 2 columns (1fr 1fr) · left col sticky · gap: 5rem (col) / 4rem (row)</div>
+          <div class="ds-grid-2col">
+            <div class="ds-col-demo"><span class="ds-col-label">Left — sticky heading</span></div>
+            <div class="ds-col-demo"><span class="ds-col-label">Right — scrollable step items</span></div>
+          </div>
+        </div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.cta-grid — 2 columns (1fr 1fr) · gap: 10rem (col)</div>
+          <div class="ds-grid-2col">
+            <div class="ds-col-demo"><span class="ds-col-label">Left — heading + checklist</span></div>
+            <div class="ds-col-demo"><span class="ds-col-label">Right — email form</span></div>
+          </div>
+        </div>
+
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.cars_card-grid — 2×2 grid · parameters panel · gap: 6rem col</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:.5rem 6rem; max-width:380px;">
+            <div class="ds-col-demo" style="min-height:50px;"><span class="ds-col-label">Výkon / kW</span></div>
+            <div class="ds-col-demo" style="min-height:50px;"><span class="ds-col-label">Palivo</span></div>
+            <div class="ds-col-demo" style="min-height:50px;"><span class="ds-col-label">Prevodovka</span></div>
+            <div class="ds-col-demo" style="min-height:50px;"><span class="ds-col-label">Karoséria</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How It Works Pattern -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Layout Pattern — .layout353_component (How It Works)</div>
+
+        <div class="w-layout-grid layout353_component">
+          <div class="layout353_content-left">
+            <div class="margin-bottom margin-small">
+              <h2 class="heading-style-h2">Ako Autovea funguje</h2>
+            </div>
+            <p class="text-color-neutral_lightest">Náš proces prenájmu vozidla je jednoduchý, rýchly a bezstarostný</p>
+          </div>
+          <div id="w-node-layout-right" class="layout353_content-right">
+            <div class="layout353_content-item content-item-1">
+              <div class="margin-bottom margin-xsmall">
+                <div class="icon-embed-small w-embed">
+                  <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" role="img" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M240 104h-10.8l-27.78-62.5A16 16 0 0 0 186.8 32H69.2a16 16 0 0 0-14.62 9.5L26.8 104H16a8 8 0 0 0 0 16h8v80a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-16h96v16a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-80h8a8 8 0 0 0 0-16M69.2 48h117.6l24.89 56H44.31ZM64 200H40v-16h24Zm128 0v-16h24v16Zm24-32H40v-48h176ZM56 144a8 8 0 0 1 8-8h16a8 8 0 0 1 0 16H64a8 8 0 0 1-8-8m112 0a8 8 0 0 1 8-8h16a8 8 0 0 1 0 16h-16a8 8 0 0 1-8-8" fill="currentColor"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="margin-bottom margin-xsmall">
+                <h5 class="text-color-white">1. Vyberiete si auto</h5>
+              </div>
+              <div class="howitworks_list">
+                <img alt="" class="icon-1x1-small" loading="lazy" src="assets/66250b2dd7c146d7247ef774_line-_bae568132d17.svg"/>
+                <p class="text-color-neutral_lightest text-align-left line-height">Zaplatíte štartovací poplatok pri flexibilnom operatívnom lízingu.</p>
+              </div>
+            </div>
+            <div class="layout353_content-item content-item-2">
+              <div class="margin-bottom margin-xsmall">
+                <div class="icon-embed-small w-embed">
+                  <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M208 32h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h16v16a8 8 0 0 0 13.66 5.66L216 118.31V224a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V32a8 8 0 0 1 8-8h96a8 8 0 0 0 0-16H48A24 24 0 0 0 24 32v192a24 24 0 0 0 24 24h160a24 24 0 0 0 24-24V48a16 16 0 0 0-16-16Zm0 72h-48V48h48Z" fill="currentColor"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="margin-bottom margin-xsmall">
+                <h5 class="text-color-white">2. Podpíšete zmluvu</h5>
+              </div>
+              <div class="howitworks_list">
+                <img alt="" class="icon-1x1-small" loading="lazy" src="assets/66250b2dd7c146d7247ef774_line-_bae568132d17.svg"/>
+                <p class="text-color-neutral_lightest text-align-left line-height">Náš tím vám zavolá a dohovoríte si termín odovzdania vozidla.</p>
+              </div>
+            </div>
+            <div class="layout353_content-item content-item-3">
+              <div class="margin-bottom margin-xsmall">
+                <div class="icon-embed-small w-embed">
+                  <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M240 104h-10.8l-27.78-62.5A16 16 0 0 0 186.8 32H69.2a16 16 0 0 0-14.62 9.5L26.8 104H16a8 8 0 0 0 0 16h8v80a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-16h96v16a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-80h8a8 8 0 0 0 0-16" fill="currentColor"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="margin-bottom margin-xsmall">
+                <h5 class="text-color-white">3. Prevezmete vozidlo</h5>
+              </div>
+              <div class="howitworks_list">
+                <img alt="" class="icon-1x1-small" loading="lazy" src="assets/66250b2dd7c146d7247ef774_line-_bae568132d17.svg"/>
+                <p class="text-color-neutral_lightest text-align-left line-height">Vozidlo odovzdávame priemerne do 14 dní od podpisu zmluvy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — MOTION & INTERACTION
+============================================================ -->
+<section id="motion" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">05 — Motion &amp; Interaction</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Motion System</h2>
+        <div class="text-color-neutral-lightest text-align-center">Hover over each element to experience its live interaction</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <!-- Button transitions -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Button Transitions — hover to trigger</div>
+        <div class="ds-motion-gallery">
+          <div class="ds-motion-item">
+            <a class="button-primary w-button" href="#">Hover me</a>
+            <div class="ds-motion-label">
+              background-color<br>0.1s ease<br>
+              #146ef5 → #0055d4<br><br>
+              box-shadow<br>
+              0.1s cubic-bezier(.95,.05,.795,.035)
+            </div>
+          </div>
+          <div class="ds-motion-item">
+            <a class="button-line-fill w-inline-block" href="#">
+              <div>
+                <div class="text-block-5">Hover me</div>
+                <div class="button-line smaller"><div class="button-line-absolute smaller" style="width:0%"></div></div>
+              </div>
+            </a>
+            <div class="ds-motion-label">
+              Underline width<br>
+              animates 0% → 100%<br>
+              color: --brand--blue<br>
+              via Webflow IX on hover
+            </div>
+          </div>
+          <div class="ds-motion-item">
+            <a class="button-primary w-button" style="background-color:#0055d4; box-shadow:0 1px .0625rem #08080814,0 .0625rem .0625rem #08080833,inset 0 .375rem .75rem #ffffff0f,inset 0 .0625rem .0625rem #fff3;" href="#">Hover state</a>
+            <div class="ds-motion-label">
+              Static hover preview<br>
+              bg: #0055d4<br>
+              box-shadow reduced
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card hover (scale + glow) -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Card Hover — Scale &amp; Blue Glow</div>
+        <div class="ds-motion-gallery">
+          <div class="ds-motion-item">
+            <div class="features_item" style="max-width:260px;">
+              <div class="margin-bottom margin-small">
+                <div class="title-wrapper">
+                  <img alt="" class="icon" src="assets/661579717bdf0181a31b42ae_car-0_cabda03c6074.svg"/>
+                  <h3 class="card-heading">Hover me</h3>
+                </div>
+              </div>
+              <p class="text-color-neutral-light">Hover to see scale(1.1) and the blue glow box-shadow.</p>
+            </div>
+            <div class="ds-motion-label">
+              .features_item:hover<br>
+              transform: scale(1.1)<br>
+              box-shadow: 0 0 2rem #146ef51a<br>
+              transition: .2s
+            </div>
+          </div>
+          <div class="ds-motion-item">
+            <div class="features_item" style="max-width:260px; transform:scale(1.1); box-shadow:0 0 2rem #146ef51a;">
+              <div class="margin-bottom margin-small">
+                <div class="title-wrapper">
+                  <img alt="" class="icon" src="assets/661579717bdf0181a31b42ae_car-0_cabda03c6074.svg"/>
+                  <h3 class="card-heading">Hover state</h3>
+                </div>
+              </div>
+              <p class="text-color-neutral-light">This card is frozen in its hover state for reference.</p>
+            </div>
+            <div class="ds-motion-label">
+              Static hover preview<br>
+              scale: 1.1<br>
+              glow: #146ef5 at 10% opacity
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow hover -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Swiper Arrow States</div>
+        <div class="ds-motion-gallery">
+          <div class="ds-motion-item">
+            <button class="swiper_arrow is-prev is-disabled">
+              <div class="icon-embed w-embed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </div>
+            </button>
+            <div class="ds-motion-label">Prev — .is-disabled<br>bg: neutral (#666)</div>
+          </div>
+          <div class="ds-motion-item">
+            <button class="swiper_arrow is-next">
+              <div class="icon-embed w-embed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </button>
+            <div class="ds-motion-label">Next — active<br>bg: #dadada (light)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Webflow IX scroll animations -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Scroll Entrance — Webflow IX (data-w-id based)</div>
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">Triggered by Webflow Interactions engine via data-w-id attributes. Elements enter via opacity + translateY/translateX transitions.</div>
+          <div style="display:flex; flex-wrap:wrap; gap:1.5rem; padding-top:1rem;">
+            <div style="background:#222; border:1px solid #333; border-radius:.5rem; padding:1.25rem 1.5rem; flex:1; min-width:200px;">
+              <div class="text-size-small text-color-neutral-lightest" style="font-family:monospace; line-height:1.8;">
+                start: opacity 0, translateY 1rem<br>
+                end: opacity 1, translateY 0px<br>
+                style: preserve-3d
+              </div>
+            </div>
+            <div style="background:#222; border:1px solid #333; border-radius:.5rem; padding:1.25rem 1.5rem; flex:1; min-width:200px;">
+              <div class="text-size-small text-color-neutral-lightest" style="font-family:monospace; line-height:1.8;">
+                elements: h1, h2, p,<br>
+                hero badge, cta sections,<br>
+                layout353 items
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logo Slider continuous animation -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Logo Slider — Continuous Marquee via transform translate3d</div>
+        <div class="ds-layout-demo">
+          <div class="ds-layout-demo-label">.logo-slider_logos uses will-change: transform + JS-driven translate3d(x, 0, 0) for a continuous horizontal marquee</div>
+          <div style="overflow:hidden; height:80px; background:radial-gradient(circle farthest-side at 50% 50%, #111, #000); border:1px solid #222; border-radius:.25rem; display:flex; align-items:center; gap:4rem; padding:0 2.5rem;">
+            <img alt="Google" src="assets/662aa08ff7a18960a514f1e5_googl_20eab5d01a14.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+            <img alt="Webflow" src="assets/662aa090f7a18960a514f615_webfl_cb2f6ae59020.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+            <img alt="YouTube" src="assets/66407881a012cd3b89d4a9c5_youtu_45caa3d552eb.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+            <img alt="Twitter" src="assets/662aa08ff7a18960a514eff8_twitc_31250b4954e2.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+            <img alt="Pinterest" src="assets/662aa090f7a18960a514fb8a_youtu_c782322e183e.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+            <img alt="Facebook" src="assets/662aa090f7a18960a514f91c_pinte_698a01d49730.svg" style="height:28px; opacity:.6; flex-shrink:0;"/>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — ICONS
+============================================================ -->
+<section id="icons" class="ds-section">
+  <div class="padding-global padding-section-large">
+    <div class="container-large">
+
+      <div class="section_heading">
+        <span class="ds-eyebrow">06 — Icons</span>
+        <h2 class="heading-style-h2 tabs text-align-center">Icon System</h2>
+        <div class="text-color-neutral-lightest text-align-center">Phosphor Icons via Iconify · inline SVG car params · custom SVG assets · all using currentColor inheritance</div>
+        <div class="spacer-huge"></div>
+      </div>
+
+      <!-- Phosphor Icons (iconify--ph) -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">.icon-embed-small .iconify--ph — 2rem × 2rem · color: neutral-lightest (#eee)</div>
+        <div class="ds-icons-grid">
+          <div class="ds-icon-item">
+            <div class="icon-embed-small w-embed">
+              <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" role="img" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <path d="M240 104h-10.8l-27.78-62.5A16 16 0 0 0 186.8 32H69.2a16 16 0 0 0-14.62 9.5L26.8 104H16a8 8 0 0 0 0 16h8v80a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-16h96v16a16 16 0 0 0 16 16h24a16 16 0 0 0 16-16v-80h8a8 8 0 0 0 0-16" fill="currentColor"></path>
+              </svg>
+            </div>
+            <span class="ds-icon-name">Car<br>ph:car</span>
+          </div>
+          <div class="ds-icon-item">
+            <div class="icon-embed-small w-embed">
+              <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" role="img" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <path d="M144.27 45.93a8 8 0 0 1 9.8-5.66a86.22 86.22 0 0 1 61.66 61.66a8 8 0 0 1-5.66 9.8a8.2 8.2 0 0 1-2.07.27a8 8 0 0 1-7.73-5.93a70.35 70.35 0 0 0-50.34-50.34a8 8 0 0 1-5.66-9.8ZM224 160a96 96 0 0 1-192 0c0-28.59 12.31-56.66 34.65-79a8 8 0 0 1 11.24.29c26.26 27.73 65.11 43.71 106.11 43.71a146.26 146.26 0 0 0 18.62-1.19a8 8 0 0 1 7.59 3.37A91.06 91.06 0 0 1 224 160Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <span class="ds-icon-name">Speedometer<br>ph:gauge</span>
+          </div>
+          <div class="ds-icon-item">
+            <div class="icon-embed-small w-embed">
+              <svg aria-hidden="true" class="iconify iconify--ph" height="100%" preserveAspectRatio="xMidYMid meet" role="img" viewBox="0 0 256 256" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <path d="M208 32h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h16v16a8 8 0 0 0 13.66 5.66L216 118.31V224a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V32a8 8 0 0 1 8-8h96a8 8 0 0 0 0-16H48A24 24 0 0 0 24 32v192a24 24 0 0 0 24 24h160a24 24 0 0 0 24-24V48a16 16 0 0 0-16-16Zm0 72h-48V48h48Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <span class="ds-icon-name">Contract<br>ph:file-text</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SVG feature icons (.icon class) -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">.icon class — SVG img files · height: 1.2rem · opacity: 0.8</div>
+        <div class="ds-icons-grid">
+          <div class="ds-icon-item">
+            <img alt="" class="icon" src="assets/661579717bdf0181a31b42ae_car-0_cabda03c6074.svg" style="height:1.5rem;"/>
+            <span class="ds-icon-name">Car-0<br>.icon</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="" class="icon" src="assets/6615798679bc1ae351858d6c_check_be5c68f6b486.svg" style="height:1.5rem;"/>
+            <span class="ds-icon-name">Check<br>.icon</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="" class="icon" src="assets/6615799a950f470f72aa581c_phone_1a1fd2ac75d7.svg" style="height:1.5rem;"/>
+            <span class="ds-icon-name">Phone<br>.icon</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="" src="assets/65df9130735241566e6b0749_check_d6aeb767fb34.svg" style="height:1.5rem; opacity:.8;"/>
+            <span class="ds-icon-name">Check (hero)<br>.hero_feature-icon<br>.cta_icon</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="" src="assets/66250b2dd7c146d7247ef774_line-_bae568132d17.svg" style="width:1rem; height:1rem;"/>
+            <span class="ds-icon-name">Line dash<br>.icon-1x1-small</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact & Social Icons -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">Contact Icons — .brix---link-icon-left · Social Icons — 30px square</div>
+        <div class="ds-icons-grid">
+          <div class="ds-icon-item">
+            <img alt="Mail" src="assets/6640dfe70417a50b95cf18b2_MAIL_e3a1390a6e86.svg" style="width:1.5rem; height:1.5rem;"/>
+            <span class="ds-icon-name">Mail<br>.brix---link-icon-left</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="Phone" src="assets/6640e032ed6f271218582ce8_phone_b56f587e8d42.svg" style="width:1.5rem; height:1.5rem;"/>
+            <span class="ds-icon-name">Phone<br>.brix---link-icon-left</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="Facebook" src="assets/66407882a012cd3b89d4aa16_faceb_812261105ad9.svg" width="30"/>
+            <span class="ds-icon-name">Facebook<br>social · 30px</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="Instagram" src="assets/66407882a012cd3b89d4aa7e_insta_0f36c1ae359f.svg" width="30"/>
+            <span class="ds-icon-name">Instagram<br>social · 30px</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="YouTube" src="assets/66407881a012cd3b89d4a9c5_youtu_45caa3d552eb.svg" width="30"/>
+            <span class="ds-icon-name">YouTube<br>social · 30px</span>
+          </div>
+          <div class="ds-icon-item">
+            <img alt="Autovea logo" src="assets/669576c21695d8ae256bb2de_White_6600b04dcb71.svg" style="height:1.25rem; width:auto;"/>
+            <span class="ds-icon-name">Logo (white)<br>.nav_logo · 10rem</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inline SVG car parameter icons -->
+      <div class="ds-subsection">
+        <div class="ds-subsection-title">.cars_card-icon — inline SVG · 18×18px · fill: currentColor</div>
+        <div class="ds-icons-grid">
+          <div class="ds-icon-item">
+            <svg class="cars_card-icon" height="28" viewBox="0 0 1024 1024" width="28" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M848 359.3H627.7L825.8 109c4.1-5.3.4-13-6.3-13H436c-2.8 0-5.5 1.5-6.9 4L170 547.5c-3.1 5.3.7 12 6.9 12h174.4l-89.4 357.6c-1.9 7.8 7.5 13.3 13.3 7.7L853.5 373c5.2-4.9 1.7-13.7-5.5-13.7z"></path>
+            </svg>
+            <span class="ds-icon-name">Power<br>Výkon motora</span>
+          </div>
+          <div class="ds-icon-item">
+            <svg height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 3a2 2 0 0 0-2 2v14a1 1 0 1 0 0 2h12a1 1 0 1 0 0-2v-5h1v2.5a2.5 2.5 0 0 0 5 0v-6.086A2 2 0 0 0 20.414 9l-2.707-2.707a1 1 0 1 0-1.414 1.414l1.1 1.101A1.999 1.999 0 0 0 19 12l.001 4.5a.5.5 0 0 1-1 0V14a2 2 0 0 0-2-2h-1V5a2 2 0 0 0-2-2H5Zm8 7V5H5v5h8Z" fill="currentColor"></path>
+            </svg>
+            <span class="ds-icon-name">Fuel<br>Palivo</span>
+          </div>
+          <div class="ds-icon-item">
+            <svg fill="currentColor" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 3a3 3 0 0 1 1 5.829v1.171a3 3 0 0 1-3 3h-4v2.171a3.001 3.001 0 1 1-4 2.829l.005-.176a3 3 0 0 1 1.995-2.654v-2.17h-5v2.171a3.001 3.001 0 1 1-4 2.829l.005-.176a3 3 0 0 1 1.995-2.654v-6.341a3 3 0 0 1-2-2.829l.005-.176a3 3 0 1 1 3.996 3.005l-.001 2.171h5v-2.17a3 3 0 0 1-2-2.83l.005-.176a3 3 0 1 1 3.996 3.005l-.001 2.171h4a1 1 0 0 0 1-1v-1.17a3 3 0 0 1-2-2.83l.005-.176a3 3 0 0 1 2.995-2.824"></path>
+            </svg>
+            <span class="ds-icon-name">Gearbox<br>Prevodovka</span>
+          </div>
+          <div class="ds-icon-item">
+            <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 384 512" fill="currentColor">
+              <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
+            </svg>
+            <span class="ds-icon-name">Location<br>Address pin</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer credit -->
+<div style="background:#000; border-top:1px solid #222; padding:2rem 2.5rem; text-align:center;">
+  <p class="text-size-small" style="color:#333; font-family:Inter Variablefont Slnt Wght,sans-serif; margin:0;">
+    Autovea Design System v1.0 — Visual language documentation
+  </p>
+</div>
+
+<script src="assets/jquery-3_0efb55b61edf.js" type="text/javascript"></script>
+<script src="assets/webflow_6a88500917cd.js" type="text/javascript"></script>
+<script src="assets/webflow_7c3bb92a1169.js" type="text/javascript"></script>
+
+</body>
+</html>
