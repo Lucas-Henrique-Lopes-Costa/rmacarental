@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Fleet — RMA Car Rental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .sort-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+    .sort-bar select{background:var(--neutral-darkest);border:1px solid var(--neutral-darker);border-radius:var(--radius-sm);padding:.5rem 2rem .5rem .75rem;color:var(--neutral-lightest);font-size:.85rem;font-family:inherit;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;}
+    .results-count{font-size:.85rem;color:var(--neutral);}
+    .results-count strong{color:var(--neutral-lightest);}
+    .no-results{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--neutral);}
+    .no-results i{font-size:3.5rem;color:var(--neutral-dark);display:block;margin-bottom:1rem;}
+    .whatsapp-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:90;width:3.5rem;height:3.5rem;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;}
+  </style>
+</head>
+<body>
+<div class="toast-container" id="toast-container"></div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo-text">RMA<span>.</span></a>
+      <div class="nav-links">
+        <a href="/#carros" class="nav-link">Fleet</a>
+        <a href="/#como-funciona" class="nav-link">How It Works</a>
+        <a href="/#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-ghost" style="font-size:.8rem;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav-mobile" id="mobile-menu">
+      <a href="/#carros" class="nav-link">Fleet</a>
+      <a href="/#como-funciona" class="nav-link">How It Works</a>
+      <a href="/#faq" class="nav-link">FAQ</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Our Fleet</span>
+    </div>
+    <span class="eyebrow">Available now</span>
+    <h1 style="font-size:2.5rem;margin-bottom:.75rem;" data-aos="fade-up">Our Fleet</h1>
+    <p class="text-body" style="max-width:520px;" data-aos="fade-up" data-aos-delay="100">
+      Premium Kia vehicles fully inspected and ready for your trip. Choose the ideal model.
+    </p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div style="display:flex;gap:1.5rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:2rem;" data-aos="fade-up">
+      <div style="flex:1;min-width:200px;">
+        <div class="form-group">
+          <label class="form-label">Search vehicles</label>
+          <input class="form-input" id="search-input" type="text" placeholder="e.g. Carnival, SUV, Diesel..."/>
+        </div>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <div class="form-group">
+          <label class="form-label">Pick-up</label>
+          <input class="form-input" id="filter-pickup" type="date" style="width:auto;font-size:.85rem;"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Return</label>
+          <input class="form-input" id="filter-return" type="date" style="width:auto;font-size:.85rem;"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar" data-aos="fade-up">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="SUV">SUV</button>
+      <button class="filter-btn" data-filter="Minivan">Minivan</button>
+      <button class="filter-btn" data-filter="disponivel">Available</button>
+    </div>
+
+    <div class="sort-bar" data-aos="fade-up">
+      <div class="results-count" id="results-count"><strong>—</strong> veículos</div>
+      <select id="sort-select" onchange="renderCars()">
+        <option value="name">Name A–Z</option>
+        <option value="price-asc">Lowest price</option>
+        <option value="price-desc">Highest price</option>
+        <option value="year-desc">Newest first</option>
+      </select>
+    </div>
+
+    <div class="cars-grid" id="cars-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--neutral);">
+        <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--blue);display:block;margin-bottom:.75rem;"></i>
+        Carregando veículos...
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:var(--neutral-darkest);border-top:1px solid var(--neutral-darker);padding:3rem 0;">
+  <div class="container" style="text-align:center;">
+    <p class="text-body" style="margin-bottom:1rem;">Didn't find what you were looking for? Get in touch.</p>
+    <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Talk to our team</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 RMA Car Rental.</div>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/admin/index.html" class="footer-link" style="color:var(--neutral-dark);font-size:.75rem;">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/5500000000000" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script src="assets/js/api.js"></script>
+<script>
+  let activeFilter = 'all';
+  let allCars = [];
+  let pickupVal = '', returnVal = '';
+
+  function getFiltered() {
+    const search = document.getElementById('search-input').value.toLowerCase();
+    const sort = document.getElementById('sort-select').value;
+    let filtered = allCars.filter(c => {
+      if (activeFilter === 'SUV' && c.category !== 'SUV') return false;
+      if (activeFilter === 'Minivan' && c.category !== 'Minivan') return false;
+      if (activeFilter === 'disponivel' && !c.available) return false;
+      if (search && !`${c.name} ${c.brand} ${c.category} ${c.fuel} ${c.transmission}`.toLowerCase().includes(search)) return false;
+      return true;
+    });
+    filtered.sort((a, b) => {
+      if (sort === 'price-asc') return a.dailyRate - b.dailyRate;
+      if (sort === 'price-desc') return b.dailyRate - a.dailyRate;
+      if (sort === 'year-desc') return b.year - a.year;
+      return a.name.localeCompare(b.name);
+    });
+    return filtered;
+  }
+
+  function renderCars() {
+    const filtered = getFiltered();
+    const grid = document.getElementById('cars-grid');
+    const count = document.getElementById('results-count');
+    count.innerHTML = `<strong>${filtered.length}</strong> vehicle${filtered.length !== 1 ? 's' : ''} found`;
+
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="no-results"><i class="fas fa-search"></i><h3 style="color:var(--neutral-lighter);font-size:1.25rem;">No vehicles found</h3><p>Try different filters or contact us on WhatsApp.</p><a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary" style="margin-top:1rem;"><i class="fab fa-whatsapp"></i> Talk to us</a></div>`;
+      return;
+    }
+
+    const days = calcDays(pickupVal, returnVal);
+    grid.innerHTML = filtered.map((c, i) => {
+      const totalStr = days > 0
+        ? `<div class="car-price-label">Total ${days}d: <strong style="color:var(--blue);">${formatCurrency(c.dailyRate * days)}</strong></div>`
+        : `<div class="car-price-label">Check availability</div>`;
+      const pickupParam = pickupVal ? `&retirada=${pickupVal}` : '';
+      const returnParam = returnVal ? `&devolucao=${returnVal}` : '';
+      return `
+        <div class="car-card" data-aos="fade-up" data-aos-delay="${Math.min(i * 80, 300)}">
+          <div class="car-card-img-wrapper">
+            <span class="car-badge ${c.available ? 'disponivel' : 'indisponivel'}">${c.available ? 'Available' : 'Unavailable'}</span>
+            <span class="car-price-badge">R$ ${c.dailyRate}/day</span>
+            <img src="${c.images[0]}" alt="${c.name} ${c.year}" loading="lazy"/>
+          </div>
+          <div class="car-card-body">
+            <div class="car-card-name">${c.name} ${c.year}</div>
+            <div class="car-card-brand">${c.brand} · ${c.category} · ${c.transmission}</div>
+            <div class="car-specs-grid">
+              <div class="car-spec"><i class="fas fa-bolt"></i><div><div class="car-spec-label">Engine</div><div class="car-spec-value">${c.engine}</div></div></div>
+              <div class="car-spec"><i class="fas fa-gas-pump"></i><div><div class="car-spec-label">Fuel</div><div class="car-spec-value">${c.fuel}</div></div></div>
+              <div class="car-spec"><i class="fas fa-users"></i><div><div class="car-spec-label">Seats</div><div class="car-spec-value">${c.seats} pass.</div></div></div>
+              <div class="car-spec"><i class="fas fa-suitcase"></i><div><div class="car-spec-label">Trunk</div><div class="car-spec-value">${c.trunkL}L</div></div></div>
+            </div>
+            <div class="car-card-footer">
+              <div class="car-price">
+                <div class="car-price-value">R$ ${c.dailyRate}<span style="font-size:.8rem;font-weight:400;color:var(--neutral)">/day</span></div>
+                ${totalStr}
+              </div>
+              <a href="/carro.html?id=${c.id}${pickupParam}${returnParam}" class="btn btn-primary btn-sm ${!c.available ? 'btn-ghost' : ''}">
+                ${c.available ? 'Book now <i class="fas fa-arrow-right"></i>' : 'Unavailable'}
+              </a>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    initAOS();
+  }
+
+  async function loadCars() {
+    try {
+      const { data } = await API.getCars();
+      allCars = data;
+      renderCars();
+    } catch (err) {
+      document.getElementById('cars-grid').innerHTML = `<div class="no-results"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i><h3 style="color:var(--neutral-lighter);">Failed to load</h3><p>Make sure the server is running at <strong>http://localhost:3000</strong></p></div>`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get('categoria');
+    if (categoryParam) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === categoryParam));
+      activeFilter = categoryParam;
+    }
+    pickupVal = params.get('retirada') || '';
+    returnVal = params.get('devolucao') || '';
+    if (pickupVal) document.getElementById('filter-pickup').value = pickupVal;
+    if (returnVal) document.getElementById('filter-return').value = returnVal;
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('filter-pickup').min = today;
+    document.getElementById('filter-return').min = today;
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderCars();
+      });
+    });
+
+    document.getElementById('search-input').addEventListener('input', renderCars);
+    document.getElementById('filter-pickup').addEventListener('change', e => {
+      pickupVal = e.target.value;
+      document.getElementById('filter-return').min = pickupVal;
+      renderCars();
+    });
+    document.getElementById('filter-return').addEventListener('change', e => { returnVal = e.target.value; renderCars(); });
+
+    loadCars();
+  });
+</script>
+</body>
+</html>

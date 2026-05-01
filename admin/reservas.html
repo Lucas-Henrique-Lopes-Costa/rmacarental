@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bookings — RMA Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .status-select{background:var(--neutral-darker);border:1px solid var(--neutral-dark);border-radius:var(--radius-sm);padding:.35rem .6rem;color:var(--white);font-size:.8rem;font-family:inherit;cursor:pointer;}
+  </style>
+</head>
+<body>
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <div class="modal-title">Booking Details</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <button class="btn btn-success" id="modal-confirm-btn" onclick="changeStatus('confirmed')"><i class="fas fa-check"></i> Confirm</button>
+      <button class="btn btn-danger" id="modal-cancel-btn" onclick="changeStatus('cancelled')"><i class="fas fa-times"></i> Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar-header"><div class="admin-brand">RMA<span>.</span> Admin</div></div>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Main</div>
+        <a href="index.html" class="admin-nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="reservas.html" class="admin-nav-item active"><i class="fas fa-calendar-alt"></i> Bookings</a>
+        <a href="carros.html" class="admin-nav-item"><i class="fas fa-car"></i> Vehicles</a>
+      </div>
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Filter by</div>
+        <a href="reservas.html" class="admin-nav-item"><i class="fas fa-list"></i> All</a>
+        <a href="reservas.html?status=pending" class="admin-nav-item"><i class="fas fa-clock" style="color:#f59e0b;"></i> Pending</a>
+        <a href="reservas.html?status=confirmed" class="admin-nav-item"><i class="fas fa-check-circle" style="color:#22c55e;"></i> Confirmed</a>
+        <a href="reservas.html?status=cancelled" class="admin-nav-item"><i class="fas fa-times-circle" style="color:#ef4444;"></i> Cancelled</a>
+      </div>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="/" class="admin-nav-item"><i class="fas fa-external-link-alt"></i> View public site</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-title">Manage Bookings</div>
+      <div class="admin-topbar-right"><div class="admin-avatar">A</div></div>
+    </div>
+    <div class="admin-content">
+      <div class="admin-stats-grid" id="mini-stats" style="margin-bottom:1.5rem;"></div>
+
+      <div class="admin-table-card">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Booking List</div>
+          <div class="admin-table-actions">
+            <input class="search-input" id="search" type="text" placeholder="Search booking..."/>
+            <select class="form-select" id="status-filter" style="width:auto;font-size:.85rem;padding:.5rem 2rem .5rem .75rem;">
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Vehicle</th><th>Customer</th><th>Contact</th><th>Pick-up</th><th>Return</th><th>Days</th><th>Value</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="table-body">
+              <tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="pagination" class="pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+  let currentId = null;
+  const PAGE_SIZE = 10;
+  let currentPage = 1;
+  let currentTotal = 0;
+
+  async function loadTable() {
+    const search = document.getElementById('search').value;
+    const status = document.getElementById('status-filter').value;
+    document.getElementById('table-body').innerHTML = '<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></td></tr>';
+    try {
+      const params = { page: currentPage, limit: PAGE_SIZE };
+      if (status) params.status = status;
+      if (search) params.search = search;
+      const { data, total, pages } = await API.getReservations(params);
+      currentTotal = total;
+      renderTable(data);
+      renderPagination(pages);
+      loadMiniStats();
+    } catch (err) {
+      document.getElementById('table-body').innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2rem;color:#ef4444;">Erro: ${err.message}</td></tr>`;
+    }
+  }
+
+  function renderTable(reservations) {
+    if (!reservations.length) {
+      document.getElementById('table-body').innerHTML = `<tr><td colspan="10" class="empty-state" style="padding:3rem;text-align:center;"><i class="fas fa-calendar-times" style="display:block;font-size:2rem;color:var(--neutral-dark);margin-bottom:.75rem;"></i><p>No bookings found.</p></td></tr>`;
+      return;
+    }
+    document.getElementById('table-body').innerHTML = reservations.map(r => `
+      <tr>
+        <td style="font-size:.75rem;color:var(--neutral);">${r.id.slice(-6).toUpperCase()}</td>
+        <td style="font-weight:500;color:var(--white);font-size:.875rem;">${r.carName}</td>
+        <td><div style="font-weight:500;color:var(--neutral-lightest);font-size:.875rem;">${r.clientName}</div></td>
+        <td style="font-size:.8rem;color:var(--neutral);"><div>${r.clientPhone}</div><div>${r.clientEmail}</div></td>
+        <td style="font-size:.875rem;">${formatDate(r.pickupDate)}<div style="font-size:.75rem;color:var(--neutral);">${r.pickupTime}</div></td>
+        <td style="font-size:.875rem;">${formatDate(r.returnDate)}</td>
+        <td style="text-align:center;">${r.totalDays}d</td>
+        <td style="color:var(--blue);font-weight:600;font-size:.9rem;">${formatCurrency(r.totalValue)}</td>
+        <td>
+          <select class="status-select" onchange="quickStatus('${r.id}', this.value)">
+            <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>Pending</option>
+            <option value="confirmed" ${r.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+            <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+          </select>
+        </td>
+        <td>
+          <div style="display:flex;gap:.375rem;">
+            <button class="btn btn-ghost btn-sm" onclick="openModal('${r.id}')" title="Ver detalhes"><i class="fas fa-eye"></i></button>
+            <a href="https://wa.me/55${r.clientPhone.replace(/\D/g,'')}" target="_blank" class="btn btn-ghost btn-sm" style="color:#25d366;"><i class="fab fa-whatsapp"></i></a>
+            <button class="btn btn-ghost btn-sm" onclick="deleteReservation('${r.id}')" style="color:#ef4444;"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  async function openModal(id) {
+    currentId = id;
+    document.getElementById('detail-modal').classList.add('open');
+    document.getElementById('modal-body').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></div>';
+    try {
+      const r = await API.getReservationById(id);
+      document.getElementById('modal-confirm-btn').style.display = r.status !== 'confirmed' ? 'inline-flex' : 'none';
+      document.getElementById('modal-cancel-btn').style.display = r.status !== 'cancelled' ? 'inline-flex' : 'none';
+      document.getElementById('modal-body').innerHTML = `
+        <div style="background:var(--black);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+          <div><div style="font-size:1.1rem;font-weight:600;color:var(--white);">${r.carName}</div><div style="font-size:.8rem;color:var(--neutral);">ID: ${r.id}</div></div>
+          <span class="badge ${getStatusBadgeClass(r.status)}">${getStatusLabel(r.status)}</span>
+        </div>
+        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);margin-bottom:1rem;">Customer Details</div>
+        <div class="detail-grid" style="margin-bottom:1.5rem;">
+          <div class="detail-item"><div class="detail-label">Name</div><div class="detail-value">${r.clientName}</div></div>
+          <div class="detail-item"><div class="detail-label">Phone</div><div class="detail-value">${r.clientPhone}</div></div>
+          <div class="detail-item"><div class="detail-label">Email</div><div class="detail-value">${r.clientEmail}</div></div>
+          <div class="detail-item"><div class="detail-label">Created at</div><div class="detail-value">${new Date(r.createdAt).toLocaleString('en-GB')}</div></div>
+        </div>
+        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);margin-bottom:1rem;">Period</div>
+        <div class="detail-grid" style="margin-bottom:1.5rem;">
+          <div class="detail-item"><div class="detail-label">Pick-up</div><div class="detail-value">${formatDate(r.pickupDate)} at ${r.pickupTime}</div></div>
+          <div class="detail-item"><div class="detail-label">Return</div><div class="detail-value">${formatDate(r.returnDate)}</div></div>
+          <div class="detail-item"><div class="detail-label">Total days</div><div class="detail-value">${r.totalDays} day${r.totalDays > 1 ? 's' : ''}</div></div>
+          <div class="detail-item"><div class="detail-label">Total value</div><div class="detail-value" style="color:var(--blue);font-size:1rem;">${formatCurrency(r.totalValue)}</div></div>
+        </div>
+        ${r.observations ? `<div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);margin-bottom:.5rem;">Notes</div><div style="background:var(--neutral-darker);border-radius:var(--radius-sm);padding:.875rem 1rem;font-size:.875rem;color:var(--neutral-lightest);line-height:1.6;margin-bottom:1.5rem;">${r.observations}</div>` : ''}
+        <div style="padding:1rem;background:var(--black);border-radius:var(--radius-md);">
+          <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);margin-bottom:.75rem;">Change Status</div>
+          <select class="form-select" onchange="changeStatus(this.value)">
+            <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>Pending</option>
+            <option value="confirmed" ${r.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+            <option value="cancelled" ${r.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+          </select>
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('modal-body').innerHTML = `<p style="color:#ef4444;">Error loading: ${err.message}</p>`;
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('detail-modal').classList.remove('open');
+    currentId = null;
+  }
+
+  async function changeStatus(status) {
+    if (!currentId) return;
+    try {
+      await API.updateReservationStatus(currentId, status);
+      showToast(`Status updated: ${getStatusLabel(status)}`, 'success');
+      closeModal();
+      loadTable();
+    } catch (err) { showToast(err.message, 'error'); }
+  }
+
+  async function quickStatus(id, status) {
+    try {
+      await API.updateReservationStatus(id, status);
+      showToast(`Status: ${getStatusLabel(status)}`, 'success');
+      loadTable();
+    } catch (err) { showToast(err.message, 'error'); }
+  }
+
+  async function deleteReservation(id) {
+    if (!confirm('Permanently remove this booking?')) return;
+    try {
+      await API.deleteReservation(id);
+      showToast('Booking removed.', 'success');
+      loadTable();
+    } catch (err) { showToast(err.message, 'error'); }
+  }
+
+  async function loadMiniStats() {
+    try {
+      const stats = await API.getStats();
+      document.getElementById('mini-stats').innerHTML = `
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${stats.total}</div><div class="admin-stat-label">Total</div></div><div class="admin-stat-icon blue"><i class="fas fa-list"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${stats.pending}</div><div class="admin-stat-label">Pending</div></div><div class="admin-stat-icon yellow"><i class="fas fa-clock"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${stats.confirmed}</div><div class="admin-stat-label">Confirmed</div></div><div class="admin-stat-icon green"><i class="fas fa-check"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${stats.cancelled}</div><div class="admin-stat-label">Cancelled</div></div><div class="admin-stat-icon red"><i class="fas fa-times"></i></div></div>
+      `;
+    } catch {}
+  }
+
+  function renderPagination(pages) {
+    const container = document.getElementById('pagination');
+    if (pages <= 1) { container.innerHTML = ''; return; }
+    let html = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goPage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+    for (let i = 1; i <= pages; i++) html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+    html += `<button class="page-btn" ${currentPage === pages ? 'disabled' : ''} onclick="goPage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+    container.innerHTML = html;
+  }
+
+  function goPage(p) { currentPage = p; loadTable(); }
+
+  document.getElementById('detail-modal').addEventListener('click', e => { if (e.target === document.getElementById('detail-modal')) closeModal(); });
+
+  let debounceTimer;
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    const statusParam = params.get('status');
+    if (statusParam) document.getElementById('status-filter').value = statusParam;
+
+    const idParam = params.get('id');
+    if (idParam) setTimeout(() => openModal(idParam), 200);
+
+    document.getElementById('search').addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => { currentPage = 1; loadTable(); }, 400);
+    });
+    document.getElementById('status-filter').addEventListener('change', () => { currentPage = 1; loadTable(); });
+
+    loadMiniStats();
+    loadTable();
+  });
+</script>
+</body>
+</html>

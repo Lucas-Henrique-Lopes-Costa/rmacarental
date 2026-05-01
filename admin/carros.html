@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicles — RMA Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .toggle-switch{position:relative;display:inline-block;width:2.5rem;height:1.375rem;}
+    .toggle-switch input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--neutral-dark);border-radius:100px;transition:background .2s;}
+    .toggle-slider::before{content:'';position:absolute;width:1rem;height:1rem;border-radius:50%;background:var(--white);left:.2rem;top:.175rem;transition:transform .2s;}
+    .toggle-switch input:checked + .toggle-slider{background:#22c55e;}
+    .toggle-switch input:checked + .toggle-slider::before{transform:translateX(1.125rem);}
+    .form-section-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);padding-bottom:.75rem;margin-bottom:1rem;border-bottom:1px solid var(--neutral-darker);}
+    .img-thumb-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
+    .img-thumb{position:relative;width:80px;height:60px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--neutral-darker);}
+    .img-thumb img{width:100%;height:100%;object-fit:cover;}
+    .img-thumb .remove-img{position:absolute;top:2px;right:2px;background:rgba(220,38,38,.8);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  </style>
+</head>
+<body>
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Car Form Modal -->
+<div class="modal-overlay" id="car-modal">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Add Vehicle</div>
+      <button class="modal-close" onclick="closeCarModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="car-form" onsubmit="saveCar(event)" enctype="multipart/form-data">
+        <div class="form-section-title">Basic information</div>
+        <div class="form-grid-3" style="margin-bottom:1rem;">
+          <div class="form-group"><label class="form-label">Name / Model *</label><input class="form-input" name="name" required placeholder="e.g. Carnival"/></div>
+          <div class="form-group"><label class="form-label">Brand *</label><input class="form-input" name="brand" required placeholder="e.g. Kia"/></div>
+          <div class="form-group"><label class="form-label">Year *</label><input class="form-input" name="year" type="number" required min="2000" max="2030" placeholder="2026"/></div>
+        </div>
+        <div class="form-grid-3" style="margin-bottom:1rem;">
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select class="form-select" name="category" required>
+              <option value="">Select</option>
+              <option value="SUV">SUV</option><option value="Minivan">Minivan</option>
+              <option value="Sedan">Sedan</option><option value="Hatchback">Hatchback</option><option value="Pickup">Pickup</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gearbox *</label>
+            <select class="form-select" name="transmission" required>
+              <option value="">Select</option>
+              <option value="Automatic">Automatic</option><option value="Manual">Manual</option><option value="CVT">CVT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fuel *</label>
+            <select class="form-select" name="fuel" required>
+              <option value="">Select</option>
+              <option value="Flex">Flex</option><option value="Gasoline">Gasoline</option>
+              <option value="Diesel">Diesel</option><option value="Electric">Electric</option><option value="Hybrid">Hybrid</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid-3" style="margin-bottom:1.5rem;">
+          <div class="form-group"><label class="form-label">Seats *</label><input class="form-input" name="seats" type="number" required min="2" max="15" placeholder="5"/></div>
+          <div class="form-group"><label class="form-label">Daily rate (R$) *</label><input class="form-input" name="dailyRate" type="number" required min="1" step="0.01" placeholder="250"/></div>
+          <div class="form-group">
+            <label class="form-label">Available</label>
+            <div style="display:flex;align-items:center;gap:.75rem;margin-top:.25rem;">
+              <label class="toggle-switch"><input type="checkbox" name="available" id="toggle-available" checked/><span class="toggle-slider"></span></label>
+              <span style="font-size:.85rem;color:var(--neutral-lightest);" id="toggle-label">Available</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">Technical specifications</div>
+        <div class="form-grid-3" style="margin-bottom:1rem;">
+          <div class="form-group"><label class="form-label">Engine</label><input class="form-input" name="engine" placeholder="e.g. 2.2 CRDi 200 hp"/></div>
+          <div class="form-group"><label class="form-label">Fuel consumption</label><input class="form-input" name="consumption" placeholder="e.g. 11.5 km/L"/></div>
+          <div class="form-group"><label class="form-label">Trunk (L)</label><input class="form-input" name="trunkL" type="number" placeholder="503"/></div>
+        </div>
+
+        <div class="form-section-title">Description &amp; content</div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" name="description" placeholder="Describe the vehicle..." style="min-height:90px;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem;">
+          <label class="form-label">Features / Highlights (one per line)</label>
+          <textarea class="form-textarea" name="features" placeholder="Triple-zone A/C&#10;Panoramic sunroof&#10;360° Camera" style="min-height:80px;"></textarea>
+        </div>
+
+        <div class="form-section-title">Vehicle photos</div>
+        <div class="form-group" style="margin-bottom:.75rem;">
+          <label class="form-label">Upload photos</label>
+          <div class="upload-area" id="upload-area" onclick="document.getElementById('photos-input').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p style="color:var(--neutral);font-size:.85rem;margin-top:.5rem;">Click to select images (JPG, PNG · max 10 MB each)</p>
+          </div>
+          <input type="file" id="photos-input" name="photos" multiple accept="image/*" style="display:none;" onchange="handlePhotos(this)"/>
+          <div class="img-thumb-list" id="img-thumbs"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label class="form-label">OR image URLs (one per line)</label>
+          <textarea class="form-textarea" name="images" id="images-url" placeholder="briefing/carros/Model/photo.jpeg" style="min-height:60px;"></textarea>
+        </div>
+
+        <input type="hidden" name="editingId" id="editing-id"/>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeCarModal()">Cancel</button>
+      <button class="btn btn-primary" id="save-btn" onclick="document.getElementById('car-form').requestSubmit()">
+        <i class="fas fa-save"></i> Save vehicle
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header"><div class="modal-title">Confirm deletion</div><button class="modal-close" onclick="document.getElementById('delete-modal').classList.remove('open')"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body"><p class="text-body">Permanently delete <strong id="delete-car-name" style="color:var(--white);"></strong>?</p></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="document.getElementById('delete-modal').classList.remove('open')">Cancel</button><button class="btn btn-danger" id="confirm-delete-btn"><i class="fas fa-trash"></i> Delete</button></div>
+  </div>
+</div>
+
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar-header"><div class="admin-brand">RMA<span>.</span> Admin</div></div>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Main</div>
+        <a href="index.html" class="admin-nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="reservas.html" class="admin-nav-item"><i class="fas fa-calendar-alt"></i> Bookings</a>
+        <a href="carros.html" class="admin-nav-item active"><i class="fas fa-car"></i> Vehicles</a>
+      </div>
+    </nav>
+    <div class="admin-sidebar-footer"><a href="/" class="admin-nav-item"><i class="fas fa-external-link-alt"></i> View public site</a></div>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-title">Manage Vehicles</div>
+      <div class="admin-topbar-right">
+        <button class="btn btn-primary" onclick="openCarModal()"><i class="fas fa-plus"></i> New Vehicle</button>
+        <div class="admin-avatar">A</div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.5rem;" id="car-stats"></div>
+
+      <div class="admin-table-card">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Full fleet</div>
+          <input class="search-input" id="car-search" type="text" placeholder="Search vehicle..."/>
+        </div>
+        <div style="padding:1.5rem;" id="cars-admin-grid">
+          <div style="text-align:center;padding:3rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--blue);display:block;margin-bottom:.75rem;"></i>Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+  let editingId = null;
+  let pendingFiles = [];
+
+  function handlePhotos(input) {
+    pendingFiles = Array.from(input.files);
+    const thumbs = document.getElementById('img-thumbs');
+    thumbs.innerHTML = pendingFiles.map((f, i) => {
+      const url = URL.createObjectURL(f);
+      return `<div class="img-thumb"><img src="${url}"/><button class="remove-img" type="button" onclick="removeFile(${i})"><i class="fas fa-times"></i></button></div>`;
+    }).join('');
+  }
+
+  function removeFile(idx) {
+    pendingFiles.splice(idx, 1);
+    const dt = new DataTransfer();
+    pendingFiles.forEach(f => dt.items.add(f));
+    document.getElementById('photos-input').files = dt.files;
+    handlePhotos(document.getElementById('photos-input'));
+  }
+
+  function openCarModal(id) {
+    const form = document.getElementById('car-form');
+    form.reset();
+    pendingFiles = [];
+    document.getElementById('img-thumbs').innerHTML = '';
+    document.getElementById('editing-id').value = '';
+    document.getElementById('modal-title').textContent = 'Add Vehicle';
+    document.getElementById('toggle-label').textContent = 'Available';
+    editingId = null;
+
+    if (id) {
+      editingId = id;
+      document.getElementById('modal-title').textContent = 'Loading vehicle...';
+      document.getElementById('car-modal').classList.add('open');
+      API.getCarById(id).then(car => {
+        document.getElementById('modal-title').textContent = `Edit — ${car.name} ${car.year}`;
+        document.getElementById('editing-id').value = id;
+        form.name.value = car.name;
+        form.brand.value = car.brand;
+        form.year.value = car.year;
+        form.category.value = car.category;
+        form.transmission.value = car.transmission;
+        form.fuel.value = car.fuel;
+        form.seats.value = car.seats;
+        form.dailyRate.value = car.dailyRate;
+        form.engine.value = car.engine || '';
+        form.consumption.value = car.consumption || '';
+        form.trunkL.value = car.trunkL || '';
+        form.description.value = car.description || '';
+        form.features.value = car.features.join('\n');
+        document.getElementById('images-url').value = car.images.join('\n');
+        form.available.checked = car.available;
+        document.getElementById('toggle-label').textContent = car.available ? 'Available' : 'Unavailable';
+
+        /* Show existing photos */
+        document.getElementById('img-thumbs').innerHTML = car.images.map((img, i) => `
+          <div class="img-thumb"><img src="/${img}" onerror="this.style.display='none'"/>
+          <div style="position:absolute;bottom:2px;left:2px;font-size:.55rem;color:#fff;background:rgba(0,0,0,.5);border-radius:2px;padding:1px 3px;">Current</div></div>`).join('');
+      }).catch(() => showToast('Error loading vehicle.', 'error'));
+      return;
+    }
+    document.getElementById('car-modal').classList.add('open');
+  }
+
+  function closeCarModal() { document.getElementById('car-modal').classList.remove('open'); }
+
+  async function saveCar(e) {
+    e.preventDefault();
+    const form = e.target;
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
+
+    try {
+      const id = document.getElementById('editing-id').value;
+      const formData = new FormData();
+
+      formData.append('name', form.name.value);
+      formData.append('brand', form.brand.value);
+      formData.append('year', form.year.value);
+      formData.append('category', form.category.value);
+      formData.append('transmission', form.transmission.value);
+      formData.append('fuel', form.fuel.value);
+      formData.append('seats', form.seats.value);
+      formData.append('dailyRate', form.dailyRate.value);
+      formData.append('engine', form.engine.value);
+      formData.append('consumption', form.consumption.value);
+      formData.append('trunkL', form.trunkL.value || 0);
+      formData.append('description', form.description.value);
+      formData.append('features', form.features.value);
+      formData.append('images', document.getElementById('images-url').value);
+      formData.append('available', form.available.checked ? 'true' : 'false');
+
+      pendingFiles.forEach(f => formData.append('photos', f));
+
+      await API.saveCarForm(formData, id || null);
+      showToast(id ? 'Vehicle updated!' : 'Vehicle added!', 'success');
+      closeCarModal();
+      loadCars();
+      loadCarStats();
+    } catch (err) {
+      showToast('Erro: ' + err.message, 'error');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = '<i class="fas fa-save"></i> Save vehicle';
+    }
+  }
+
+  function confirmDelete(id, name) {
+    document.getElementById('delete-car-name').textContent = name;
+    document.getElementById('delete-modal').classList.add('open');
+    document.getElementById('confirm-delete-btn').onclick = async () => {
+      try {
+        await API.deleteCar(id);
+        showToast('Vehicle deleted.', 'success');
+        document.getElementById('delete-modal').classList.remove('open');
+        loadCars();
+        loadCarStats();
+      } catch (err) { showToast(err.message, 'error'); }
+    };
+  }
+
+  async function toggleAvailability(id, currentVal) {
+    try {
+      await API.updateCarAvailability(id, !currentVal);
+      showToast(!currentVal ? 'Vehicle set to available.' : 'Vehicle set to unavailable.', 'success');
+      loadCars();
+      loadCarStats();
+    } catch (err) { showToast(err.message, 'error'); }
+  }
+
+  async function loadCarStats() {
+    try {
+      const { data: cars } = await API.getCars();
+      const avail = cars.filter(c => c.available).length;
+      document.getElementById('car-stats').innerHTML = `
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${cars.length}</div><div class="admin-stat-label">Total vehicles</div></div><div class="admin-stat-icon blue"><i class="fas fa-car"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${avail}</div><div class="admin-stat-label">Available</div></div><div class="admin-stat-icon green"><i class="fas fa-check-circle"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">${cars.length - avail}</div><div class="admin-stat-label">Unavailable</div></div><div class="admin-stat-icon red"><i class="fas fa-times-circle"></i></div></div>
+      `;
+    } catch {}
+  }
+
+  let debounce;
+  async function loadCars() {
+    const search = document.getElementById('car-search').value;
+    const container = document.getElementById('cars-admin-grid');
+    try {
+      const params = {};
+      if (search) params.search = search;
+      const { data: cars } = await API.getCars(params);
+
+      if (!cars.length) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-car"></i><h3 style="color:var(--neutral-lighter);margin-bottom:.5rem;">No vehicles found</h3><p>Add the first vehicle by clicking "New Vehicle".</p></div>`;
+        return;
+      }
+
+      container.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;">
+        ${cars.map(c => `
+          <div class="car-card" style="border:1px solid var(--neutral-darker);">
+            <div class="car-card-img-wrapper">
+              <span class="car-badge ${c.available ? 'disponivel' : 'indisponivel'}">${c.available ? 'Available' : 'Unavailable'}</span>
+              <span class="car-price-badge">R$ ${c.dailyRate}/dia</span>
+              <img src="/${c.images[0]}" alt="${c.name}" loading="lazy" onerror="this.style.display='none'"/>
+            </div>
+            <div class="car-card-body">
+              <div class="car-card-name">${c.name} ${c.year}</div>
+              <div class="car-card-brand">${c.brand} · ${c.category} · ${c.transmission} · ${c.fuel}</div>
+              <div style="display:flex;gap:1.5rem;margin:.75rem 0;font-size:.8rem;color:var(--neutral);">
+                <span><i class="fas fa-users" style="color:var(--blue);margin-right:4px;"></i>${c.seats} seats</span>
+                <span><i class="fas fa-suitcase" style="color:var(--blue);margin-right:4px;"></i>${c.trunkL}L</span>
+                <span><i class="fas fa-bolt" style="color:var(--blue);margin-right:4px;"></i>${c.engine}</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;padding-top:.75rem;border-top:1px solid var(--neutral-darker);">
+                <div style="display:flex;align-items:center;gap:.5rem;">
+                  <label class="toggle-switch" title="Alterar disponibilidade">
+                    <input type="checkbox" ${c.available ? 'checked' : ''} onchange="toggleAvailability('${c.id}', ${c.available})"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                  <span style="font-size:.75rem;color:var(--neutral);">${c.available ? 'Available' : 'Unavailable'}</span>
+                </div>
+                <div style="display:flex;gap:.5rem;">
+                  <a href="/${c.images[0] ? 'carro.html?id=' + c.id : '#'}" target="_blank" class="btn btn-ghost btn-sm" title="Ver no site"><i class="fas fa-external-link-alt"></i></a>
+                  <button class="btn btn-ghost btn-sm" onclick="openCarModal('${c.id}')" title="Editar"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-ghost btn-sm" onclick="confirmDelete('${c.id}', '${c.name} ${c.year}')" style="color:#ef4444;" title="Excluir"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+    } catch (err) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i><p>Error loading: ${err.message}</p></div>`;
+    }
+  }
+
+  document.getElementById('toggle-available')?.addEventListener('change', e => {
+    document.getElementById('toggle-label').textContent = e.target.checked ? 'Available' : 'Unavailable';
+  });
+
+  document.getElementById('car-modal').addEventListener('click', e => { if (e.target === document.getElementById('car-modal')) closeCarModal(); });
+  document.getElementById('delete-modal').addEventListener('click', e => { if (e.target === document.getElementById('delete-modal')) document.getElementById('delete-modal').classList.remove('open'); });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('action') === 'new') setTimeout(() => openCarModal(), 100);
+
+    document.getElementById('car-search').addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(loadCars, 350);
+    });
+
+    loadCarStats();
+    loadCars();
+  });
+</script>
+</body>
+</html>

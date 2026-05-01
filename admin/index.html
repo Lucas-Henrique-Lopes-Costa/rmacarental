@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — RMA Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .chart-card{background:var(--neutral-darkest);border:1px solid var(--neutral-darker);border-radius:var(--radius-lg);padding:1.5rem;}
+    .chart-title{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:1.25rem;}
+    .activity-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--neutral-darker);}
+    .activity-item:last-child{border-bottom:none;}
+    .activity-dot{width:.5rem;height:.5rem;border-radius:50%;margin-top:.35rem;flex-shrink:0;}
+    .activity-dot.pending{background:#f59e0b;}
+    .activity-dot.confirmed{background:#22c55e;}
+    .activity-dot.cancelled{background:#ef4444;}
+    .grid-3{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;}
+    .car-mini-img{width:3.5rem;height:2.5rem;border-radius:var(--radius-sm);object-fit:cover;background:var(--neutral-darker);flex-shrink:0;}
+    @media(max-width:900px){.grid-3{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="toast-container" id="toast-container"></div>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar-header"><div class="admin-brand">RMA<span>.</span> Admin</div></div>
+    <nav class="admin-nav">
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Main</div>
+        <a href="index.html" class="admin-nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="reservas.html" class="admin-nav-item"><i class="fas fa-calendar-alt"></i> Bookings</a>
+        <a href="carros.html" class="admin-nav-item"><i class="fas fa-car"></i> Vehicles</a>
+      </div>
+      <div class="admin-nav-section">
+        <div class="admin-nav-section-title">Shortcuts</div>
+        <a href="reservas.html?status=pending" class="admin-nav-item"><i class="fas fa-clock" style="color:#f59e0b;"></i> Pending</a>
+        <a href="carros.html?action=new" class="admin-nav-item"><i class="fas fa-plus" style="color:#22c55e;"></i> New vehicle</a>
+      </div>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="/" class="admin-nav-item"><i class="fas fa-external-link-alt"></i> View public site</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-title">Dashboard</div>
+      <div class="admin-topbar-right">
+        <div style="font-size:.8rem;color:var(--neutral);" id="current-date"></div>
+        <div class="admin-avatar">A</div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div class="admin-stats-grid" id="stats-grid">
+        <div class="admin-stat-card"><div><div class="admin-stat-value"><i class="fas fa-circle-notch fa-spin" style="font-size:1rem;color:var(--blue);"></i></div><div class="admin-stat-label">Loading...</div></div><div class="admin-stat-icon blue"><i class="fas fa-chart-pie"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">—</div><div class="admin-stat-label">Pending</div></div><div class="admin-stat-icon yellow"><i class="fas fa-clock"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">—</div><div class="admin-stat-label">Confirmed</div></div><div class="admin-stat-icon green"><i class="fas fa-check-circle"></i></div></div>
+        <div class="admin-stat-card"><div><div class="admin-stat-value">—</div><div class="admin-stat-label">Cancelled</div></div><div class="admin-stat-icon red"><i class="fas fa-times-circle"></i></div></div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:1.5rem;">
+        <div class="chart-card"><div class="chart-title">Bookings by Status</div><canvas id="status-chart" height="240"></canvas></div>
+        <div class="chart-card"><div class="chart-title">Recent Activity</div><div id="activity-feed"><div style="text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></div></div></div>
+      </div>
+
+      <div class="admin-table-card" style="margin-bottom:1.5rem;">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Recent Bookings</div>
+          <a href="reservas.html" class="btn btn-ghost btn-sm">View all <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Vehicle</th><th>Customer</th><th>Pick-up</th><th>Return</th><th>Value</th><th>Status</th><th></th></tr></thead>
+            <tbody id="recent-table-body">
+              <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+        <div class="admin-table-card">
+          <div class="admin-table-header"><div class="admin-table-title">Fleet</div><a href="carros.html" class="btn btn-ghost btn-sm">Manage</a></div>
+          <div id="fleet-list" style="padding:0 1.25rem;"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Revenue by Month</div>
+          <canvas id="revenue-chart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+  Chart.defaults.color = '#666';
+  Chart.defaults.borderColor = '#222';
+  Chart.defaults.font.family = 'Montserrat';
+
+  let statusChartInstance = null;
+  let revenueChartInstance = null;
+
+  async function renderDashboard() {
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    try {
+      const [stats, { data: reservations }, { data: cars }] = await Promise.all([
+        API.getStats(),
+        API.getReservations({ limit: 6 }),
+        API.getCars(),
+      ]);
+
+      /* Stats */
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="admin-stat-card">
+          <div><div class="admin-stat-value">${stats.total}</div><div class="admin-stat-label">Total bookings</div><div class="admin-stat-trend"><i class="fas fa-database"></i> Database</div></div>
+          <div class="admin-stat-icon blue"><i class="fas fa-calendar-alt"></i></div>
+        </div>
+        <div class="admin-stat-card">
+          <div><div class="admin-stat-value">${stats.pending}</div><div class="admin-stat-label">Pending bookings</div><div style="font-size:.75rem;color:#f59e0b;margin-top:.5rem;"><i class="fas fa-clock"></i> Awaiting confirmation</div></div>
+          <div class="admin-stat-icon yellow"><i class="fas fa-clock"></i></div>
+        </div>
+        <div class="admin-stat-card">
+          <div><div class="admin-stat-value">${stats.confirmed}</div><div class="admin-stat-label">Confirmed</div><div style="font-size:.75rem;color:#22c55e;margin-top:.5rem;"><i class="fas fa-check-circle"></i> ${formatCurrency(stats.totalRevenue)}</div></div>
+          <div class="admin-stat-icon green"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="admin-stat-card">
+          <div><div class="admin-stat-value">${stats.cancelled}</div><div class="admin-stat-label">Cancelled</div></div>
+          <div class="admin-stat-icon red"><i class="fas fa-times-circle"></i></div>
+        </div>
+      `;
+
+      /* Status chart */
+      if (statusChartInstance) statusChartInstance.destroy();
+      statusChartInstance = new Chart(document.getElementById('status-chart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Pending', 'Confirmed', 'Cancelled'],
+          datasets: [{ data: [stats.pending, stats.confirmed, stats.cancelled], backgroundColor: ['#f59e0b', '#22c55e', '#ef4444'], borderColor: '#111', borderWidth: 3 }]
+        },
+        options: { plugins: { legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } } }, cutout: '65%' }
+      });
+
+      /* Activity feed */
+      document.getElementById('activity-feed').innerHTML = reservations.slice(0, 5).map(r => `
+        <div class="activity-item">
+          <div class="activity-dot ${r.status}"></div>
+          <div>
+            <div style="font-size:.85rem;color:var(--neutral-lightest);">${r.clientName} — ${r.carName}</div>
+            <div style="font-size:.75rem;color:var(--neutral);">${formatDate(r.pickupDate)} → ${formatDate(r.returnDate)} · ${formatCurrency(r.totalValue)}</div>
+            <div style="font-size:.7rem;color:var(--neutral-dark);">${new Date(r.createdAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</div>
+          </div>
+        </div>`).join('') || '<div style="text-align:center;padding:2rem;color:var(--neutral);">No activity.</div>';
+
+      /* Recent table */
+      document.getElementById('recent-table-body').innerHTML = reservations.map(r => `
+        <tr>
+          <td style="font-weight:500;color:var(--white);">${r.carName}</td>
+          <td>${r.clientName}</td>
+          <td>${formatDate(r.pickupDate)}</td>
+          <td>${formatDate(r.returnDate)}</td>
+          <td style="color:var(--blue);font-weight:600;">${formatCurrency(r.totalValue)}</td>
+          <td><span class="badge ${getStatusBadgeClass(r.status)}">${getStatusLabel(r.status)}</span></td>
+          <td><a href="reservas.html?id=${r.id}" class="btn btn-ghost btn-sm">View</a></td>
+        </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--neutral);">No bookings.</td></tr>';
+
+      /* Fleet list */
+      document.getElementById('fleet-list').innerHTML = cars.map(c => `
+        <div class="activity-item" style="padding:.875rem 0;">
+          <img class="car-mini-img" src="/${c.images[0]}" alt="${c.name}" onerror="this.style.visibility='hidden';this.style.width='3.5rem'"/>
+          <div style="flex:1;">
+            <div style="font-size:.875rem;font-weight:600;color:var(--white);">${c.name} ${c.year}</div>
+            <div style="font-size:.75rem;color:var(--neutral);">${c.category} · ${formatCurrency(c.dailyRate)}/day</div>
+          </div>
+          <span class="badge ${c.available ? 'badge-available' : 'badge-unavailable'}">${c.available ? 'Available' : 'Unavailable'}</span>
+        </div>`).join('') || '<div style="padding:1rem;color:var(--neutral);font-size:.85rem;">No vehicles registered.</div>';
+
+      /* Revenue chart */
+      if (revenueChartInstance) revenueChartInstance.destroy();
+      const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+      const revenues = [1800, 2400, 3200, 2100, 3800, stats.totalRevenue];
+      revenueChartInstance = new Chart(document.getElementById('revenue-chart'), {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [{ label: 'Revenue (R$)', data: revenues, backgroundColor: 'rgba(20,110,245,.6)', borderColor: '#146ef5', borderWidth: 1, borderRadius: 4 }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: '#222' }, ticks: { color: '#666' } },
+            y: { grid: { color: '#222' }, ticks: { color: '#666', callback: v => 'R$ ' + v.toLocaleString('en-US') } }
+          }
+        }
+      });
+
+    } catch (err) {
+      showToast('Error loading dashboard: ' + err.message, 'error');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderDashboard);
+</script>
+</body>
+</html>

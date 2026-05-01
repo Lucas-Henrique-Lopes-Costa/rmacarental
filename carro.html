@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicle Details — RMA Car Rental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .price-summary{background:var(--neutral-darker);border-radius:var(--radius-md);padding:1rem 1.25rem;margin:1rem 0;display:none;}
+    .price-summary.visible{display:block;}
+    .price-row{display:flex;justify-content:space-between;font-size:.875rem;color:var(--neutral-light);margin-bottom:.4rem;}
+    .price-row.total{border-top:1px solid var(--neutral-dark);margin-top:.75rem;padding-top:.75rem;font-weight:700;color:var(--white);font-size:1rem;}
+    .price-row.total span:last-child{color:var(--blue);}
+    .gallery-thumb-row{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.25rem;}
+    .gallery-thumb-row::-webkit-scrollbar{height:3px;}
+    .gallery-thumb-row::-webkit-scrollbar-thumb{background:var(--neutral-darker);border-radius:2px;}
+    .feature-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--neutral-darkest);border:1px solid var(--neutral-darker);border-radius:100px;padding:.3rem .75rem;font-size:.8rem;color:var(--neutral-lightest);}
+    .feature-tag i{color:var(--blue);font-size:.7rem;}
+    .features-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem;}
+    .success-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;}
+    .success-overlay.show{display:flex;}
+    .success-card{background:var(--neutral-darkest);border:1px solid var(--neutral-darker);border-radius:var(--radius-xl);padding:3rem 2.5rem;text-align:center;max-width:480px;width:100%;}
+    .success-icon{width:5rem;height:5rem;border-radius:50%;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#22c55e;}
+  </style>
+</head>
+<body>
+
+<div class="toast-container" id="toast-container"></div>
+
+<div class="success-overlay" id="success-overlay">
+  <div class="success-card">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <h3 class="h4" style="margin-bottom:.75rem;color:var(--white);">Booking submitted!</h3>
+    <p class="text-body" style="margin-bottom:.5rem;">Your request has been received and saved successfully.</p>
+    <p class="text-body" style="margin-bottom:2rem;font-size:.875rem;">Our team will contact you on WhatsApp within 1 business hour to confirm the details.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+      <a href="/carros.html" class="btn btn-outline">Browse other cars</a>
+      <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo-text">RMA<span>.</span></a>
+      <div class="nav-links">
+        <a href="/carros.html" class="nav-link">Fleet</a>
+        <a href="/#como-funciona" class="nav-link">How It Works</a>
+        <a href="/#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-ghost" style="font-size:.8rem;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav-mobile" id="mobile-menu">
+      <a href="/carros.html" class="nav-link">Frota</a>
+    </div>
+  </div>
+</nav>
+
+<div id="page-content" style="padding-top:4.5rem;min-height:80vh;">
+  <div style="text-align:center;padding:6rem;color:var(--neutral);">
+    <i class="fas fa-circle-notch fa-spin" style="font-size:2rem;color:var(--blue);display:block;margin-bottom:1rem;"></i>
+    Loading vehicle...
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 RMA Car Rental.</div>
+      <a href="/carros.html" class="footer-link">View full fleet</a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/5500000000000" target="_blank" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:90;width:3.5rem;height:3.5rem;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="assets/js/api.js"></script>
+<script>
+  let car = null;
+  let fpPickup, fpReturn;
+  let isoPickup = '', isoReturn = '';
+
+  function setMainImage(idx) {
+    document.getElementById('main-img').src = car.images[idx];
+    document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === idx));
+  }
+
+  function updatePriceSummary() {
+    const summary = document.getElementById('price-summary');
+    if (!isoPickup || !isoReturn) { summary.classList.remove('visible'); return; }
+    const days = calcDays(isoPickup, isoReturn);
+    if (days <= 0) { summary.classList.remove('visible'); return; }
+    document.getElementById('summary-days').textContent = `${days} dia${days > 1 ? 's' : ''}`;
+    document.getElementById('summary-rate').textContent = formatCurrency(car.dailyRate);
+    document.getElementById('summary-total').textContent = formatCurrency(days * car.dailyRate);
+    summary.classList.add('visible');
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    if (!isoPickup || !isoReturn) { showToast('Please select pick-up and return dates.', 'error'); return; }
+    const days = calcDays(isoPickup, isoReturn);
+    if (days <= 0) { showToast('Return date must be after pick-up date.', 'error'); return; }
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const origText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Submitting...';
+
+    try {
+      await API.createReservation({
+        carId: car.id,
+        carName: `${car.name} ${car.year}`,
+        clientName: form.clientName.value,
+        clientPhone: form.clientPhone.value,
+        clientEmail: form.clientEmail.value,
+        pickupDate: isoPickup,
+        returnDate: isoReturn,
+        pickupTime: form.pickupTime.value,
+        observations: form.observations.value,
+        totalDays: days,
+        totalValue: days * car.dailyRate,
+      });
+      document.getElementById('success-overlay').classList.add('show');
+    } catch (err) {
+      showToast('Error submitting booking: ' + err.message, 'error');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origText;
+    }
+  }
+
+  async function renderPage() {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (!id) { window.location.href = '/carros.html'; return; }
+
+    try {
+      car = await API.getCarById(id);
+    } catch {
+      window.location.href = '/carros.html';
+      return;
+    }
+
+    document.title = `${car.name} ${car.year} — RMA Car Rental`;
+    const pickupDefault = params.get('retirada') || '';
+    const returnDefault = params.get('devolucao') || '';
+    isoPickup = pickupDefault;
+    isoReturn = returnDefault;
+
+    const thumbsHtml = car.images.map((img, i) => `
+      <div class="car-thumb thumb-item ${i === 0 ? 'active' : ''}" onclick="setMainImage(${i})" style="width:80px;flex-shrink:0;">
+        <img src="${img}" alt="${car.name} foto ${i + 1}" loading="lazy"/>
+      </div>`).join('');
+
+    const specsHtml = [
+      { icon: 'fa-bolt', label: 'Engine', value: car.engine },
+      { icon: 'fa-gas-pump', label: 'Fuel', value: car.fuel },
+      { icon: 'fa-exchange-alt', label: 'Gearbox', value: car.transmission },
+      { icon: 'fa-users', label: 'Seats', value: `${car.seats} passengers` },
+      { icon: 'fa-suitcase', label: 'Trunk', value: `${car.trunkL} litres` },
+      { icon: 'fa-tachometer-alt', label: 'Consumption', value: car.consumption },
+    ].map(s => `
+      <div class="spec-chip">
+        <i class="fas ${s.icon}"></i>
+        <div>
+          <div style="font-size:.7rem;color:var(--neutral);text-transform:uppercase;letter-spacing:.06em;">${s.label}</div>
+          <div style="font-size:.875rem;font-weight:600;color:var(--white);">${s.value}</div>
+        </div>
+      </div>`).join('');
+
+    const featuresHtml = car.features.map(f => `<span class="feature-tag"><i class="fas fa-check"></i>${f}</span>`).join('');
+
+    const timeOptions = Array.from({length: 13}, (_, i) => i + 7)
+      .map(h => `<option value="${String(h).padStart(2, '0')}:00">${String(h).padStart(2, '0')}:00</option>`).join('');
+
+    document.getElementById('page-content').innerHTML = `
+      <section class="section">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href="/">Home</a><i class="fas fa-chevron-right"></i>
+            <a href="/carros.html">Fleet</a><i class="fas fa-chevron-right"></i>
+            <span>${car.name} ${car.year}</span>
+          </div>
+          <div class="car-detail-grid">
+            <!-- Gallery -->
+            <div class="car-gallery" data-aos="fade-right">
+              <div class="car-gallery-main"><img id="main-img" src="${car.images[0]}" alt="${car.name} ${car.year}"/></div>
+              <div class="gallery-thumb-row">${thumbsHtml}</div>
+            </div>
+            <!-- Info + Booking -->
+            <div data-aos="fade-left">
+              <span class="badge ${car.available ? 'badge-available' : 'badge-unavailable'}" style="margin-bottom:.75rem;display:inline-flex;">
+                <i class="fas fa-circle" style="font-size:.5rem;"></i>
+                ${car.available ? 'Available' : 'Unavailable'}
+              </span>
+              <h1 class="car-detail-title" style="font-size:1.75rem;">${car.name} ${car.year}</h1>
+              <div class="car-detail-category">${car.brand} · ${car.category} · ${car.year}</div>
+              <div class="car-detail-price">
+                <div class="car-detail-price-value">${formatCurrency(car.dailyRate)}</div>
+                <div class="car-detail-price-label">per day</div>
+              </div>
+              <div class="car-detail-specs">${specsHtml}</div>
+              <p class="car-detail-desc">${car.description}</p>
+              <div style="margin-bottom:1.5rem;">
+                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--neutral);margin-bottom:.75rem;">Features &amp; highlights</div>
+                <div class="features-tags">${featuresHtml}</div>
+              </div>
+              <!-- Booking Form -->
+              <div class="booking-card" ${!car.available ? 'style="opacity:.6;pointer-events:none;"' : ''}>
+                <div class="booking-card-title"><i class="fas fa-calendar-check" style="color:var(--blue);margin-right:.5rem;"></i>Make a Booking</div>
+                <form id="booking-form" onsubmit="handleSubmit(event)">
+                  <div class="form-grid-2" style="margin-bottom:1rem;">
+                    <div class="form-group">
+                      <label class="form-label">Pick-up date *</label>
+                      <input class="form-input" id="pickup-date" type="text" placeholder="Select a date" required readonly/>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Return date *</label>
+                      <input class="form-input" id="return-date" type="text" placeholder="Select a date" required readonly/>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:1rem;">
+                    <label class="form-label">Pick-up time *</label>
+                    <select class="form-select" name="pickupTime" required><option value="">Select time</option>${timeOptions}</select>
+                  </div>
+                  <div class="price-summary" id="price-summary">
+                    <div class="price-row"><span>Daily rate</span><span id="summary-rate"></span></div>
+                    <div class="price-row"><span>Period</span><span id="summary-days"></span></div>
+                    <div class="price-row total"><span>Estimated total</span><span id="summary-total"></span></div>
+                  </div>
+                  <div style="height:1px;background:var(--neutral-darker);margin:1rem 0;"></div>
+                  <div class="form-group" style="margin-bottom:.75rem;">
+                    <label class="form-label">Full name *</label>
+                    <input class="form-input" name="clientName" type="text" placeholder="Your name" required/>
+                  </div>
+                  <div class="form-grid-2" style="margin-bottom:.75rem;">
+                    <div class="form-group">
+                      <label class="form-label">Phone / WhatsApp *</label>
+                      <input class="form-input" name="clientPhone" type="tel" placeholder="(00) 00000-0000" required/>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Email *</label>
+                      <input class="form-input" name="clientEmail" type="email" placeholder="seu@email.com" required/>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" name="observations" placeholder="Any special requests?" style="min-height:80px;"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                    <i class="fas fa-check"></i> Request Booking
+                  </button>
+                  <p style="text-align:center;font-size:.75rem;color:var(--neutral);margin-top:.75rem;">
+                    <i class="fas fa-lock" style="color:var(--blue);"></i> Secure data · Confirmation via WhatsApp
+                  </p>
+                </form>
+              </div>
+              ${!car.available ? `<div class="card" style="margin-top:1rem;text-align:center;"><p class="text-body" style="margin-bottom:1rem;">This vehicle is temporarily unavailable.</p><a href="https://wa.me/5500000000000" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Check availability</a></div>` : ''}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section style="background:var(--neutral-darkest);padding:4rem 0;">
+        <div class="container">
+          <div class="section-heading" style="margin-bottom:2.5rem;">
+            <span class="eyebrow">Keep exploring</span>
+            <h2 class="gradient" style="font-size:2rem;">Other vehicles</h2>
+          </div>
+          <div class="cars-grid" id="other-cars">
+            <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--neutral);"><i class="fas fa-circle-notch fa-spin" style="color:var(--blue);"></i></div>
+          </div>
+        </div>
+      </section>
+    `;
+
+    initDatePickers(pickupDefault, returnDefault);
+    loadOtherCars();
+    initAOS();
+    if (pickupDefault && returnDefault) updatePriceSummary();
+  }
+
+  function initDatePickers(pickupDefault, returnDefault) {
+    const today = new Date();
+    fpPickup = flatpickr('#pickup-date', {
+minDate: today,
+      defaultDate: pickupDefault || null,
+      dateFormat: 'd/m/Y',
+      onChange([date]) {
+        isoPickup = date ? date.toISOString().split('T')[0] : '';
+        const next = new Date(date);
+        next.setDate(next.getDate() + 1);
+        fpReturn.set('minDate', next);
+        updatePriceSummary();
+      }
+    });
+    fpReturn = flatpickr('#return-date', {
+minDate: new Date(today.getTime() + 86400000),
+      defaultDate: returnDefault || null,
+      dateFormat: 'd/m/Y',
+      onChange([date]) { isoReturn = date ? date.toISOString().split('T')[0] : ''; updatePriceSummary(); }
+    });
+  }
+
+  async function loadOtherCars() {
+    try {
+      const { data: cars } = await API.getCars({ available: true });
+      const others = cars.filter(c => c.id !== car.id).slice(0, 3);
+      const container = document.getElementById('other-cars');
+      if (!container) return;
+      if (!others.length) { container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--neutral);">No other vehicles available.</div>'; return; }
+      container.innerHTML = others.map(c => `
+        <div class="car-card">
+          <div class="car-card-img-wrapper">
+            <span class="car-badge disponivel">Available</span>
+            <span class="car-price-badge">R$ ${c.dailyRate}/day</span>
+            <img src="${c.images[0]}" alt="${c.name}" loading="lazy"/>
+          </div>
+          <div class="car-card-body">
+            <div class="car-card-name">${c.name} ${c.year}</div>
+            <div class="car-card-brand">${c.brand} · ${c.category}</div>
+            <div class="car-specs-grid">
+              <div class="car-spec"><i class="fas fa-bolt"></i><div><div class="car-spec-label">Engine</div><div class="car-spec-value">${c.engine}</div></div></div>
+              <div class="car-spec"><i class="fas fa-users"></i><div><div class="car-spec-label">Seats</div><div class="car-spec-value">${c.seats} pass.</div></div></div>
+            </div>
+            <div class="car-card-footer">
+              <div class="car-price"><div class="car-price-value">R$ ${c.dailyRate}<span style="font-size:.8rem;font-weight:400;color:var(--neutral)">/day</span></div></div>
+              <a href="/carro.html?id=${c.id}" class="btn btn-primary btn-sm">View details</a>
+            </div>
+          </div>
+        </div>`).join('');
+    } catch {}
+  }
+
+  document.addEventListener('DOMContentLoaded', renderPage);
+</script>
+</body>
+</html>

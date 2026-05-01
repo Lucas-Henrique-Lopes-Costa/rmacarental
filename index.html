@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RMA Car Rental — Premium Kia Car Rentals</title>
+  <meta name="description" content="Premium Kia car rentals at the best value. Carnival, Sportage and Sorento available for rent."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <style>
+    .hero-bg { background-image: linear-gradient(180deg,rgba(0,0,0,0) 28%,#000 95%),linear-gradient(90deg,rgba(0,0,0,.65) 40%,transparent); }
+    .logo-stripe { background:var(--neutral-darkest);border-top:1px solid var(--neutral-darker);border-bottom:1px solid var(--neutral-darker);padding:1.5rem 0;overflow:hidden; }
+    .logo-stripe-track { display:flex;align-items:center;gap:4rem;animation:marquee 22s linear infinite;white-space:nowrap; }
+    .logo-stripe-item { font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--neutral);display:flex;align-items:center;gap:.5rem;flex-shrink:0; }
+    .logo-stripe-item i { color:var(--blue);font-size:1rem; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .whatsapp-float { position:fixed;bottom:1.5rem;right:1.5rem;z-index:90;width:3.5rem;height:3.5rem;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s; }
+    .whatsapp-float:hover { transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.6); }
+    .search-bar { background:rgba(17,17,17,.92);border:1px solid var(--neutral-darker);border-radius:var(--radius-xl);padding:1rem 1.5rem;display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;backdrop-filter:blur(12px);margin-top:2.5rem; }
+    .search-bar .form-group { flex:1;min-width:160px; }
+    .search-bar .form-input, .search-bar .form-select { background:var(--neutral-darker);border-color:var(--neutral-dark); }
+    .testimonial-card { background:var(--neutral-darkest);border:1px solid var(--neutral-darker);border-radius:var(--radius-lg);padding:1.75rem; }
+    .stars { color:#f59e0b;font-size:.85rem;margin-bottom:.75rem; }
+  </style>
+</head>
+<body>
+
+<div class="toast-container" id="toast-container"></div>
+
+<a href="https://wa.me/5500000000000" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo-text">RMA<span>.</span></a>
+      <div class="nav-links">
+        <a href="#carros" class="nav-link">Fleet</a>
+        <a href="#como-funciona" class="nav-link">How It Works</a>
+        <a href="#beneficios" class="nav-link">Benefits</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <a href="/carros.html" class="btn btn-primary">View Cars</a>
+        <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="nav-mobile" id="mobile-menu">
+      <a href="#carros" class="nav-link">Fleet</a>
+      <a href="#como-funciona" class="nav-link">How It Works</a>
+      <a href="#beneficios" class="nav-link">Benefits</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="/carros.html" class="btn btn-primary" style="align-self:flex-start;">View Cars</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <img src="briefing/carros/Kia Sorrento 2026/WhatsApp Image 2026-04-16 at 14.27.32.jpeg" alt="Kia Sorento" class="hero-img" loading="eager"/>
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge" data-aos="fade-up">
+        <i class="fas fa-circle-check" style="color:#22c55e;font-size:.75rem;"></i>
+        Premium Kia fleet available now
+      </div>
+      <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+        Rent the perfect car for every journey
+      </h1>
+      <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+        Latest-generation Kia SUVs and minivans packed with comfort, safety and technology to make every trip an unforgettable experience.
+      </p>
+      <div class="hero-cta" data-aos="fade-up" data-aos-delay="300">
+        <a href="/carros.html" class="btn btn-primary btn-lg"><i class="fas fa-car"></i> Browse our fleet</a>
+        <a href="#como-funciona" class="btn btn-ghost btn-lg">How it works <i class="fas fa-arrow-down" style="font-size:.8rem;"></i></a>
+      </div>
+      <!-- Search bar -->
+      <div class="search-bar" data-aos="fade-up" data-aos-delay="400">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-car" style="color:var(--blue);margin-right:4px;"></i>Vehicle type</label>
+          <select class="form-select" id="hero-category">
+            <option value="">All</option>
+            <option value="SUV">SUV</option>
+            <option value="Minivan">Minivan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-calendar" style="color:var(--blue);margin-right:4px;"></i>Pick-up</label>
+          <input class="form-input" id="hero-pickup" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-calendar-check" style="color:var(--blue);margin-right:4px;"></i>Return</label>
+          <input class="form-input" id="hero-return" type="date"/>
+        </div>
+        <button class="btn btn-primary" onclick="heroSearch()" style="height:2.75rem;padding:0 1.5rem;flex-shrink:0;">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+      <div class="hero-features" data-aos="fade-up" data-aos-delay="500">
+        <div class="hero-feature"><i class="fas fa-check-circle"></i> No loyalty fees</div>
+        <div class="hero-feature"><i class="fas fa-check-circle"></i> 2023–2026 vehicles</div>
+        <div class="hero-feature"><i class="fas fa-check-circle"></i> Book in minutes</div>
+        <div class="hero-feature"><i class="fas fa-check-circle"></i> WhatsApp support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Logo stripe -->
+<div class="logo-stripe">
+  <div class="logo-stripe-track">
+    <div class="logo-stripe-item"><i class="fas fa-shield-alt"></i> Insurance included</div>
+    <div class="logo-stripe-item"><i class="fas fa-headset"></i> 24h support</div>
+    <div class="logo-stripe-item"><i class="fas fa-star"></i> Certified Kia</div>
+    <div class="logo-stripe-item"><i class="fas fa-map-marker-alt"></i> Delivery to location</div>
+    <div class="logo-stripe-item"><i class="fas fa-wallet"></i> Flexible payment</div>
+    <div class="logo-stripe-item"><i class="fas fa-car"></i> 2023–2026 fleet</div>
+    <div class="logo-stripe-item"><i class="fas fa-shield-alt"></i> Insurance included</div>
+    <div class="logo-stripe-item"><i class="fas fa-headset"></i> 24h support</div>
+    <div class="logo-stripe-item"><i class="fas fa-star"></i> Certified Kia</div>
+    <div class="logo-stripe-item"><i class="fas fa-map-marker-alt"></i> Delivery to location</div>
+    <div class="logo-stripe-item"><i class="fas fa-wallet"></i> Flexible payment</div>
+    <div class="logo-stripe-item"><i class="fas fa-car"></i> 2023–2026 fleet</div>
+  </div>
+</div>
+
+<!-- Stats -->
+<section class="section-sm">
+  <div class="container">
+    <div class="stats-grid" id="stats-section">
+      <div class="stat-card" data-aos="fade-up"><div class="stat-value"><span class="number-gradient">500+</span></div><div class="stat-label">Customers served</div></div>
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="100"><div class="stat-value"><span class="number-gradient" id="stat-cars">3</span></div><div class="stat-label">Models available</div></div>
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="200"><div class="stat-value"><span class="number-gradient">98%</span></div><div class="stat-label">Satisfaction rate</div></div>
+      <div class="stat-card" data-aos="fade-up" data-aos-delay="300"><div class="stat-value"><span class="number-gradient">24h</span></div><div class="stat-label">Support</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Cars -->
+<section class="section" id="carros">
+  <div class="container">
+    <div class="section-heading" data-aos="fade-up">
+      <span class="eyebrow">Our fleet</span>
+      <h2 class="gradient">Available vehicles</h2>
+      <p>Choose from our premium Kia models — all inspected, cleaned and ready to go.</p>
+    </div>
+    <div class="cars-grid" id="featured-cars">
+      <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--neutral);">
+        <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--blue);display:block;margin-bottom:.75rem;"></i>
+        Loading vehicles...
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;" data-aos="fade-up">
+      <a href="/carros.html" class="btn btn-outline btn-lg">View all vehicles <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="como-funciona" style="background:var(--neutral-darkest);">
+  <div class="container">
+    <div class="how-grid">
+      <div class="how-left" data-aos="fade-right">
+        <span class="eyebrow">Simple process</span>
+        <h2 style="margin-bottom:1rem;">How the rental works</h2>
+        <p class="text-body" style="margin-bottom:2rem;">In just a few steps you book the ideal vehicle and enjoy a hassle-free experience.</p>
+        <a href="/carros.html" class="btn btn-primary"><i class="fas fa-car"></i> Choose my car</a>
+      </div>
+      <div class="how-steps">
+        <div class="how-step" data-aos="fade-up"><div class="step-icon"><i class="fas fa-car"></i></div><div><div class="step-number">Step 01</div><div class="step-title">Choose a vehicle</div><p class="step-desc">Browse our fleet, compare specs and prices. Find the perfect car for your needs.</p></div></div>
+        <div class="how-step" data-aos="fade-up" data-aos-delay="100"><div class="step-icon"><i class="fas fa-calendar-alt"></i></div><div><div class="step-number">Step 02</div><div class="step-title">Make your booking</div><p class="step-desc">Fill in your pick-up and return details, add your contact info and submit the request. Fast and effortless.</p></div></div>
+        <div class="how-step" data-aos="fade-up" data-aos-delay="200"><div class="step-icon"><i class="fas fa-phone-alt"></i></div><div><div class="step-number">Step 03</div><div class="step-title">Confirm on WhatsApp</div><p class="step-desc">Our team will reach out to confirm the details and answer any questions you have.</p></div></div>
+        <div class="how-step" data-aos="fade-up" data-aos-delay="300"><div class="step-icon"><i class="fas fa-key"></i></div><div><div class="step-number">Step 04</div><div class="step-title">Pick up &amp; enjoy</div><p class="step-desc">On the agreed day and time, pick up your fully inspected vehicle and hit the road. Safe travels!</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits -->
+<section class="section" id="beneficios">
+  <div class="container">
+    <div class="section-heading" data-aos="fade-up">
+      <span class="eyebrow">Why RMA</span>
+      <h2 class="gradient">Everything you need in a rental</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" data-aos="fade-up"><div class="feature-title"><i class="fas fa-shield-alt feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">Inspected fleet</h3></div><p class="text-body">Every vehicle undergoes a full inspection before each rental, guaranteeing safety and peace of mind.</p></div>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100"><div class="feature-title"><i class="fas fa-headset feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">24-hour support</h3></div><p class="text-body">Our team is available around the clock on WhatsApp to handle any issue and ensure a smooth experience.</p></div>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200"><div class="feature-title"><i class="fas fa-money-bill-wave feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">Transparent pricing</h3></div><p class="text-body">No hidden fees. The daily rate you see is the rate you pay. Full transparency from quote to return.</p></div>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300"><div class="feature-title"><i class="fas fa-star feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">Premium vehicles</h3></div><p class="text-body">Exclusive Kia 2023–2026 fleet loaded with technology, comfort and the latest safety features.</p></div>
+      <div class="feature-card" data-aos="fade-up"><div class="feature-title"><i class="fas fa-clock feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">Quick booking</h3></div><p class="text-body">Streamlined process. In under 5 minutes you can secure your vehicle for the dates you need.</p></div>
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100"><div class="feature-title"><i class="fas fa-map-marker-alt feature-icon" style="font-size:1.5rem;"></i><h3 class="card-heading">Flexible delivery</h3></div><p class="text-body">Drop-off and pick-up at an agreed location, making your experience even more convenient and personalised.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section" style="background:var(--neutral-darkest);">
+  <div class="container">
+    <div class="section-heading" data-aos="fade-up">
+      <span class="eyebrow">Reviews</span>
+      <h2 class="gradient">What our customers say</h2>
+    </div>
+    <div class="cars-grid">
+      <div class="testimonial-card" data-aos="fade-up"><div class="stars">★★★★★</div><p style="color:var(--neutral-light);font-size:.9rem;line-height:1.7;margin-bottom:1rem;">"I rented the Carnival for a family trip and it was perfect! The car was spotless, plenty of space and comfort. I will definitely be back!"</p><div style="font-weight:600;color:var(--white);font-size:.875rem;">John Silva</div><div style="font-size:.75rem;color:var(--neutral);">São Paulo, SP</div></div>
+      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100"><div class="stars">★★★★★</div><p style="color:var(--neutral-light);font-size:.9rem;line-height:1.7;margin-bottom:1rem;">"Booking via WhatsApp was super easy. The Sportage was immaculate. Excellent service from start to finish. Highly recommended!"</p><div style="font-weight:600;color:var(--white);font-size:.875rem;">Mary Oliveira</div><div style="font-size:.75rem;color:var(--neutral);">Rio de Janeiro, RJ</div></div>
+      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200"><div class="stars">★★★★★</div><p style="color:var(--neutral-light);font-size:.9rem;line-height:1.7;margin-bottom:1rem;">"The Sorento exceeded my expectations. Powerful engine, luxurious interior and flawless service. Worth every penny!"</p><div style="font-weight:600;color:var(--white);font-size:.875rem;">Carlos Mendes</div><div style="font-size:.75rem;color:var(--neutral);">Belo Horizonte, MG</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-heading" data-aos="fade-up">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="gradient">FAQ</h2>
+    </div>
+    <div class="faq-list" data-aos="fade-up">
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">What documents are required to rent?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">A valid driver's licence (category B or higher), a government-issued ID and a credit card for the security deposit. For businesses, we require company registration documents.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">What is the minimum rental period?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">The minimum rental period is 1 day. For rentals of more than 7 days, we offer special discount conditions.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">What is included in the daily rate?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">The daily rate includes the fully inspected vehicle, mandatory insurance, 24h roadside assistance and WhatsApp support. Full comprehensive insurance can be added separately.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Can I cancel my booking?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">Yes. Cancellations made more than 48 hours in advance incur no charge. Cancellations within 48 hours may incur a fee equivalent to 1 daily rate.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">How does payment work?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">We accept credit card, debit card and PIX. Payment is made at the time of vehicle pick-up.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)">Do the vehicles have tracking?<div class="faq-icon"><i class="fas fa-plus"></i></div></div><div class="faq-answer">Yes, all vehicles in our fleet are equipped with a vehicle tracking system, ensuring safety throughout the entire rental period.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-card" data-aos="zoom-in">
+      <div class="cta-grid">
+        <div>
+          <h2 style="font-size:2rem;font-weight:700;color:var(--white);margin-bottom:.75rem;">Ready for your next trip?</h2>
+          <p style="color:rgba(255,255,255,.8);margin-bottom:1.5rem;">Book now on WhatsApp or through our online form. We respond within 1 business hour.</p>
+          <div class="cta-list">
+            <div class="cta-list-item"><i class="fas fa-check-circle"></i> Fast confirmation, no red tape</div>
+            <div class="cta-list-item"><i class="fas fa-check-circle"></i> Vehicles available 7 days a week</div>
+            <div class="cta-list-item"><i class="fas fa-check-circle"></i> Personalised support from start to finish</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <a href="/carros.html" class="btn btn-ghost btn-lg" style="border-color:rgba(255,255,255,.4);justify-content:center;"><i class="fas fa-car"></i> Browse our fleet</a>
+          <a href="https://wa.me/5500000000000" target="_blank" class="btn btn-lg" style="background:#25d366;color:#fff;justify-content:center;"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-text">RMA<span>.</span></div>
+          <p class="footer-brand-desc">Specialists in premium Kia vehicle rentals. Comfort, safety and technology.</p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/5500000000000" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <div class="footer-links">
+            <a href="/" class="footer-link">Home</a>
+            <a href="/carros.html" class="footer-link">Our Fleet</a>
+            <a href="#como-funciona" class="footer-link">How It Works</a>
+            <a href="#faq" class="footer-link">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Vehicles</div>
+          <div class="footer-links" id="footer-cars-links">
+            <a href="/carro.html?id=car_carnival_2026" class="footer-link">Kia Carnival 2026</a>
+            <a href="/carro.html?id=car_sportage_2023" class="footer-link">Kia Sportage 2023</a>
+            <a href="/carro.html?id=car_sorrento_2026" class="footer-link">Kia Sorento 2026</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Contact</div>
+          <a href="https://wa.me/5500000000000" class="footer-contact-item"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:contato@rmacarental.com" class="footer-contact-item"><i class="fas fa-envelope"></i> contato@rmacarental.com</a>
+          <a href="tel:+5500000000000" class="footer-contact-item"><i class="fas fa-phone"></i> (00) 00000-0000</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2026 RMA Car Rental. All rights reserved.</div>
+      <a href="/admin/index.html" class="footer-link" style="font-size:.75rem;color:var(--neutral-dark);">Admin Panel</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/api.js"></script>
+<script>
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  function heroSearch() {
+    const params = new URLSearchParams();
+    const cat = document.getElementById('hero-category').value;
+    const pickup = document.getElementById('hero-pickup').value;
+    const ret = document.getElementById('hero-return').value;
+    if (cat) params.set('categoria', cat);
+    if (pickup) params.set('retirada', pickup);
+    if (ret) params.set('devolucao', ret);
+    window.location.href = '/carros.html' + (params.toString() ? '?' + params.toString() : '');
+  }
+
+  function carCardHtml(c, i) {
+    return `
+      <div class="car-card" data-aos="fade-up" data-aos-delay="${i * 100}">
+        <div class="car-card-img-wrapper">
+          <span class="car-badge disponivel">Available</span>
+          <span class="car-price-badge">R$ ${c.dailyRate}/day</span>
+          <img src="${c.images[0]}" alt="${c.name} ${c.year}" loading="lazy"/>
+        </div>
+        <div class="car-card-body">
+          <div class="car-card-name">${c.name} ${c.year}</div>
+          <div class="car-card-brand">${c.brand} · ${c.category} · ${c.transmission}</div>
+          <div class="car-specs-grid">
+            <div class="car-spec"><i class="fas fa-bolt"></i><div><div class="car-spec-label">Engine</div><div class="car-spec-value">${c.engine}</div></div></div>
+            <div class="car-spec"><i class="fas fa-gas-pump"></i><div><div class="car-spec-label">Fuel</div><div class="car-spec-value">${c.fuel}</div></div></div>
+            <div class="car-spec"><i class="fas fa-users"></i><div><div class="car-spec-label">Seats</div><div class="car-spec-value">${c.seats} passengers</div></div></div>
+            <div class="car-spec"><i class="fas fa-suitcase"></i><div><div class="car-spec-label">Trunk</div><div class="car-spec-value">${c.trunkL}L</div></div></div>
+          </div>
+          <div class="car-card-footer">
+            <div class="car-price">
+              <div class="car-price-value">R$ ${c.dailyRate}<span style="font-size:.8rem;font-weight:400;color:var(--neutral)">/day</span></div>
+              <div class="car-price-label">Check availability</div>
+            </div>
+            <a href="/carro.html?id=${c.id}" class="btn btn-primary btn-sm">Book now <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function loadFeaturedCars() {
+    try {
+      const { data: cars } = await API.getCars({ available: true });
+      const container = document.getElementById('featured-cars');
+      if (!cars.length) {
+        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-car"></i><p>No vehicles available at the moment.</p></div>';
+        return;
+      }
+      container.innerHTML = cars.slice(0, 3).map((c, i) => carCardHtml(c, i)).join('');
+      document.getElementById('stat-cars').textContent = cars.length + '+';
+      initAOS();
+    } catch (err) {
+      document.getElementById('featured-cars').innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>Error loading vehicles. Make sure the server is running.</p></div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadFeaturedCars();
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('hero-pickup').min = today;
+    document.getElementById('hero-return').min = today;
+    document.getElementById('hero-pickup').addEventListener('change', e => { document.getElementById('hero-return').min = e.target.value; });
+  });
+</script>
+</body>
+</html>
