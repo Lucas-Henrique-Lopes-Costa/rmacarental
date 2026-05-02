@@ -25,6 +25,7 @@
 </head>
 <body>
 <div class="toast-container" id="toast-container"></div>
+<div class="admin-overlay" id="admin-overlay"></div>
 
 <!-- Car Form Modal -->
 <div class="modal-overlay" id="car-modal">
@@ -147,14 +148,17 @@
 
   <div class="admin-main">
     <div class="admin-topbar">
-      <div class="admin-topbar-title">Manage Vehicles</div>
+      <div class="admin-topbar-left">
+        <button class="admin-menu-btn" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <div class="admin-topbar-title">Manage Vehicles</div>
+      </div>
       <div class="admin-topbar-right">
-        <button class="btn btn-primary" onclick="openCarModal()"><i class="fas fa-plus"></i> New Vehicle</button>
+        <button class="btn btn-primary" onclick="openCarModal()"><i class="fas fa-plus"></i> <span class="hide-xs">New Vehicle</span></button>
         <div class="admin-avatar">A</div>
       </div>
     </div>
     <div class="admin-content">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:1.5rem;" id="car-stats"></div>
+      <div class="admin-stats-grid" style="margin-bottom:1.5rem;" id="car-stats"></div>
 
       <div class="admin-table-card">
         <div class="admin-table-header">
@@ -384,6 +388,14 @@
 
     loadCarStats();
     loadCars();
+
+    // Sidebar toggle (mobile)
+    const toggle = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('admin-overlay');
+    const sidebar = document.getElementById('sidebar');
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+    if (toggle) toggle.addEventListener('click', function() { sidebar.classList.contains('open') ? closeSidebar() : (sidebar.classList.add('open'), overlay.classList.add('open')); });
+    if (overlay) overlay.addEventListener('click', closeSidebar);
   });
 </script>
 </body>

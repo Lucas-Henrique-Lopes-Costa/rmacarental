@@ -1,0 +1,9 @@
+node_modules
+.git
+.DS_Store
+briefing
+referencias
+*.md
+database/rmacarental.db
+uploads/*
+!uploads/.gitkeep

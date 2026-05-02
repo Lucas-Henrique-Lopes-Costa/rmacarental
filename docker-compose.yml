@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    networks:
+      - easypanel
+    volumes:
+      - uploads:/app/uploads
+      - db:/app/database
+    environment:
+      - NODE_ENV=production
+
+volumes:
+  uploads:
+  db:
+
+networks:
+  easypanel:
+    external: true

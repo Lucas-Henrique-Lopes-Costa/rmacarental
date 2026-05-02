@@ -1762,6 +1762,49 @@ tbody td {
 ::-webkit-scrollbar-thumb { background: var(--neutral-darker); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--neutral-dark); }
 
+/* --- Admin sidebar toggle button (hidden on desktop) ------- */
+.admin-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: 1px solid var(--neutral-darker);
+  border-radius: var(--radius-sm);
+  color: var(--neutral-light);
+  cursor: pointer;
+  font-size: .9rem;
+  flex-shrink: 0;
+  transition: all var(--t-base);
+}
+.admin-menu-btn:hover { background: rgba(255,255,255,.06); color: var(--white); }
+
+/* Admin topbar left flex wrapper */
+.admin-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* Admin sidebar overlay */
+.admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 48;
+  backdrop-filter: blur(2px);
+}
+.admin-overlay.open { display: block; }
+
+/* Dashboard bottom two-col grid */
+.dashboard-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
 /* --- Responsive -------------------------------------------- */
 @media (max-width: 1024px) {
   .features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1778,26 +1821,102 @@ tbody td {
 @media (max-width: 768px) {
   .container { padding: 0 1.25rem; }
   .section { padding: 4rem 0; }
+
+  /* Nav */
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
+
+  /* Grids */
   .features-grid { grid-template-columns: 1fr; }
   .cars-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
-  .admin-sidebar { transform: translateX(-100%); }
-  .admin-sidebar.open { transform: translateX(0); }
-  .admin-main { margin-left: 0; }
-  .admin-stats-grid { grid-template-columns: 1fr 1fr; }
   .form-grid-2 { grid-template-columns: 1fr; }
   .form-grid-3 { grid-template-columns: 1fr; }
-  .cta-card { padding: 2rem 1.5rem; }
-  .car-gallery-thumbs { grid-template-columns: repeat(3, 1fr); }
   .detail-grid { grid-template-columns: 1fr; }
+  .dashboard-bottom-grid { grid-template-columns: 1fr; }
+  .car-gallery-thumbs { grid-template-columns: repeat(3, 1fr); }
+
+  /* Hero search bar — stack vertically */
+  .search-bar {
+    flex-direction: column;
+    padding: 1rem;
+    gap: .75rem;
+  }
+  .search-bar .form-group {
+    width: 100%;
+    min-width: 0 !important;
+  }
+  .search-bar button,
+  .search-bar .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Booking card — not sticky on mobile */
+  .booking-card { position: static; }
+
+  /* CTA */
+  .cta-card { padding: 2rem 1.25rem; }
+
+  /* Admin sidebar */
+  .admin-sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 32px rgba(0,0,0,.5);
+  }
+  .admin-main { margin-left: 0; }
+  .admin-stats-grid { grid-template-columns: 1fr 1fr; }
+  .admin-content { padding: 1.25rem; }
+  .admin-topbar { padding: 0 1.25rem; }
+
+  /* Show sidebar toggle button */
+  .admin-menu-btn { display: flex; }
+
+  /* Admin table actions wrap */
+  .admin-table-header { flex-direction: column; align-items: flex-start; }
+  .admin-table-actions { width: 100%; flex-wrap: wrap; }
+  .search-input { width: 100%; }
+}
+
+/* Hide text on very small screens (icon-only buttons) */
+@media (max-width: 480px) {
+  .hide-xs { display: none; }
 }
 
 @media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  .admin-stats-grid { grid-template-columns: 1fr; }
+  .container { padding: 0 1rem; }
+  .section { padding: 3rem 0; }
+
   h1, .h1 { font-size: 2.25rem; }
   h2, .h2 { font-size: 1.75rem; }
+
+  .stats-grid { grid-template-columns: 1fr; }
+  .admin-stats-grid { grid-template-columns: 1fr; }
+  .admin-content { padding: 1rem; }
+  .admin-topbar { padding: 0 1rem; }
+
+  /* Filter bar horizontal scroll on very small screens */
+  .filter-bar { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .375rem; }
+  .filter-bar::-webkit-scrollbar { height: 3px; }
+  .filter-bar::-webkit-scrollbar-thumb { background: var(--neutral-darker); border-radius: 2px; }
+  .filter-btn { flex-shrink: 0; }
+
+  /* Car detail specs — single column */
+  .car-detail-specs { grid-template-columns: 1fr; }
+
+  /* CTA buttons stack */
+  .cta-card { padding: 1.5rem 1rem; }
+  .hero-features { gap: 1rem; }
+
+  /* Footer bottom */
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: .5rem; }
+
+  /* Nav actions — smaller buttons */
+  .nav-actions { gap: .5rem; }
+  .nav-actions .btn-ghost { padding: .5rem .75rem; font-size: .8rem; }
+  .nav-actions .btn-primary { padding: .5rem .875rem; font-size: .8rem; }
 }

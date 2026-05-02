@@ -15,6 +15,7 @@
 </head>
 <body>
 <div class="toast-container" id="toast-container"></div>
+<div class="admin-overlay" id="admin-overlay"></div>
 
 <!-- Detail Modal -->
 <div class="modal-overlay" id="detail-modal">
@@ -57,7 +58,10 @@
 
   <div class="admin-main">
     <div class="admin-topbar">
-      <div class="admin-topbar-title">Manage Bookings</div>
+      <div class="admin-topbar-left">
+        <button class="admin-menu-btn" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <div class="admin-topbar-title">Manage Bookings</div>
+      </div>
       <div class="admin-topbar-right"><div class="admin-avatar">A</div></div>
     </div>
     <div class="admin-content">
@@ -265,6 +269,14 @@
 
     loadMiniStats();
     loadTable();
+
+    // Sidebar toggle (mobile)
+    const toggle = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('admin-overlay');
+    const sidebar = document.getElementById('sidebar');
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+    if (toggle) toggle.addEventListener('click', function() { sidebar.classList.contains('open') ? closeSidebar() : (sidebar.classList.add('open'), overlay.classList.add('open')); });
+    if (overlay) overlay.addEventListener('click', closeSidebar);
   });
 </script>
 </body>

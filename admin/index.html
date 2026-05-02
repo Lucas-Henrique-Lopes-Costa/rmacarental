@@ -25,6 +25,7 @@
 </head>
 <body>
 <div class="toast-container" id="toast-container"></div>
+<div class="admin-overlay" id="admin-overlay"></div>
 <div class="admin-layout">
   <aside class="admin-sidebar" id="sidebar">
     <div class="admin-sidebar-header"><div class="admin-brand">RMA<span>.</span> Admin</div></div>
@@ -48,7 +49,10 @@
 
   <div class="admin-main">
     <div class="admin-topbar">
-      <div class="admin-topbar-title">Dashboard</div>
+      <div class="admin-topbar-left">
+        <button class="admin-menu-btn" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <div class="admin-topbar-title">Dashboard</div>
+      </div>
       <div class="admin-topbar-right">
         <div style="font-size:.8rem;color:var(--neutral);" id="current-date"></div>
         <div class="admin-avatar">A</div>
@@ -82,7 +86,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+      <div class="dashboard-bottom-grid">
         <div class="admin-table-card">
           <div class="admin-table-header"><div class="admin-table-title">Fleet</div><a href="carros.html" class="btn btn-ghost btn-sm">Manage</a></div>
           <div id="fleet-list" style="padding:0 1.25rem;"></div>
@@ -206,6 +210,17 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderDashboard);
+
+  // Sidebar toggle (mobile)
+  (function() {
+    const toggle = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('admin-overlay');
+    const sidebar = document.getElementById('sidebar');
+    function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('open'); }
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+    if (toggle) toggle.addEventListener('click', function() { sidebar.classList.contains('open') ? closeSidebar() : openSidebar(); });
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+  })();
 </script>
 </body>
 </html>
