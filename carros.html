@@ -25,7 +25,7 @@
 <nav class="nav" id="nav">
   <div class="container">
     <div class="nav-inner">
-      <a href="/" class="nav-logo-text">RMA<span>.</span></a>
+      <a href="/" class="nav-logo-link"><img src="/uploads/logo.png" alt="RMA Car Rental" class="nav-logo"/></a>
       <div class="nav-links">
         <a href="/#carros" class="nav-link">Fleet</a>
         <a href="/#como-funciona" class="nav-link">How It Works</a>
@@ -84,6 +84,7 @@
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="SUV">SUV</button>
       <button class="filter-btn" data-filter="Minivan">Minivan</button>
+      <button class="filter-btn" data-filter="Pickup">Pickup</button>
       <button class="filter-btn" data-filter="disponivel">Available</button>
     </div>
 
@@ -139,6 +140,7 @@
     let filtered = allCars.filter(c => {
       if (activeFilter === 'SUV' && c.category !== 'SUV') return false;
       if (activeFilter === 'Minivan' && c.category !== 'Minivan') return false;
+      if (activeFilter === 'Pickup' && c.category !== 'Pickup') return false;
       if (activeFilter === 'disponivel' && !c.available) return false;
       if (search && !`${c.name} ${c.brand} ${c.category} ${c.fuel} ${c.transmission}`.toLowerCase().includes(search)) return false;
       return true;
